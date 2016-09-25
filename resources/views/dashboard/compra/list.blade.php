@@ -71,8 +71,8 @@
 	                <td>{{$factura->id}}</td>
 	                <td>{{$factura->fecha}}</td>
 	                <td>{{$factura->total}}</td>
-                    <?php $imagen=$factura->foto; ?>
-	                <td><img height="130px" src="data:image/jpg;base64,<?php echo base64_encode($imagen);?>"/></td>
+	                <td><a class="btn btn-sm btn-success" href="/facturas/<?php echo $factura->foto; ?>" target="blank" >VER</a> </td>
+
                     @foreach($proveedores as $proveedor)
                         @if($proveedor->id==$factura->id_proveedor && $proveedor->estado!=2)
                             <td>{{$proveedor->empresa}}</td>

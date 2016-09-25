@@ -37,6 +37,7 @@ class empleadoController extends Controller
             'telefono'=>"required|alpha_num|min:6|max:10",
             'fechaIngreso'=>"required"
         ]);
+        
         //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
         if($validator->fails()){
             return redirect()->back()->withErrors($validator->errors());
@@ -48,7 +49,7 @@ class empleadoController extends Controller
             $empleado->name =  $request->input("name");
             $empleado->apellidos =  $request->input("apellidos");
             //convierto la fecha del datepick a date
-            $empleado->fechaNacimiento =  date("Y-m-d", strtotime($request->input("fechaNacimiento"))));
+            $empleado->fechaNacimiento =  date("Y-m-d", strtotime($request->input("fechaNacimiento")));
             $empleado->email =  $request->input("email");
             //encripto la contraaseña
             $empleado->password = bcrypt($request->input("password"));

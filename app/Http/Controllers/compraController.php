@@ -30,22 +30,33 @@ class compraController extends Controller
     }
 
     public function store(Request $request){
+        //captruo las filas de la tabla
+        $codigos=$_POST['codigos'];
+        $cantidades=$_POST['cantidades'];
+        $costos=$_POST['costos'];
+        $bandera=false;
        $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
             'total'=>"required|integer|between:0,100000000"
         ]);
         //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
-        if($validator->fails()){
+
+        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+       for ($i=0; $i <sizeof($codigos) ; $i++) { 
+           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
+            $bandera=true;
+            break;
+           }
+       }
+       
+        if($validator->fails()|| $bandera){
             return redirect()->back()->withErrors($validator->errors());
         }else{
-        //captruo las filas de la tabla
-        $codigos=$_POST['codigos'];
-        $cantidades=$_POST['cantidades'];
-        $costos=$_POST['costos'];
+        
 
         //capturo las filas de la tabla de la factura
-        $imagen=base64_encode(file_get_contents($_FILES['imagen']['tmp_name']));
+        $imagen=$_FILES['imagen']['name'];
         
 
         //instanciamos una nueva factura de compra
@@ -57,6 +68,10 @@ class compraController extends Controller
         $facturaCompra->id_proveedor=$request->input("proveedor");
         $facturaCompra->save();
 
+        //para subir la imagen al servidor
+        if(!move_uploaded_file($_FILES['imagen']['tmp_name'],"facturas/".$imagen)){
+            echo "erorr al subir documento";
+        }
         //capturo el id con el cual fue guardado la factura
         $id_factura=$facturaCompra->id;
 
