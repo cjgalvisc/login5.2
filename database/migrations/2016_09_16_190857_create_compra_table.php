@@ -13,7 +13,7 @@ class CreateCompraTable extends Migration
     public function up()
     {
         Schema::create('compra', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('cantidad');
             $table->double('subtotal');
             //llave foranea de facturaCompra
@@ -22,9 +22,6 @@ class CreateCompraTable extends Migration
             //llave foranea de facturaCompra
             $table->integer('id_facturaCompra')->unsigned();
             $table->foreign('id_facturaCompra')->references('id')->on('facturaCompra');
-            /*//llave foranea de proveedor
-            $table->integer('id_proveedor')->unsigned();
-            $table->foreign('id_proveedor')->references('id')->on('proveedor');*/
             $table->timestamps();
         });
     }

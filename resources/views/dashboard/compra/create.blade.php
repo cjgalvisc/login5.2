@@ -16,6 +16,17 @@
     <!-- Languaje -->
     <script src="{{asset('datePicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
 
+<!--script para hacer el calculo del subtotal autmoatico-->+
+<script type="text/javascript">
+function producto(){
+    m1=document.getElementById('columna1').value;
+    m2=document.getElementById('columna2').value;
+    resultado=m1*m2;
+    document.getElementById('columna3').value=resultado;
+}
+    
+
+</script>
 
 @section('contenido')
 <!-- Page Heading -->
@@ -24,11 +35,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Registrar <small>Empleado</small>
+                            Registrar <small>Compra</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i> Empleado
+                                <i class="fa fa-dashboard"></i> Compra
                             </li>
                         </ol>
 <!--mensaje de error-->
@@ -42,18 +53,12 @@
 	  </ul>
 	</div>
 @endif
-<script type="text/javascript">
 
-$(document).ready(function(){
-    $(".textos").click(function(){
-        $("#capa").val($(this).val());
-    });
-});
- 
-</script>
 
       <div class="form-group">
       <form action="{{url('compra/store')}}" method="post" id="compra-crear">
+        <label># Factura</label>
+        <input type="text" name="id_factura" class="form-control"></input>
 
 		<label >Proveedor</label>
 		<select name="proveedor" class="form-control" id="lista_proveedores">
@@ -61,11 +66,11 @@ $(document).ready(function(){
 			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>		
 			  @endforeach
 		</select>
-		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-success">Nuevo</button></a>
+		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
 
 		<!--Campo para fecha-->
         <div class="form-group">
-            <label for="date">Fecha</label>
+            <label for="date">Fecha(DD/MM/YY)</label>
             <div class="input-group">
                 <input type="text" class="form-control datepicker" name="fecha">
                 <div class="input-group-addon">
@@ -77,20 +82,20 @@ $(document).ready(function(){
 
 	    <!--Campo para guardar documento-->      
 		<div class="form-group">
-             	<label>Foto<span class="required">*</span></label>
-				<input type="file" name="documento" class="form-control">
+             	<label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
+				<input type="file" name="documento" class="form-control" accept="image/*">
         </div>
 
 
-        <label >Factura Compra</label>
-      <input type="button" id="agregar" value="Agregar" class="btn btn-success"></input>
+      <label >Factura Compra</label>
+      <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
         <!--tabla-->
         <table id="tabla" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Codigo</th>
+                    <th>Codigo Producto</th>
                     <th>Cantidad</th>
-                    <th>Subtotal</th>
+                    <th>Precio Unitario</th>
                     <th>Opcion</th>
                 </tr>
             </thead>
@@ -101,8 +106,8 @@ $(document).ready(function(){
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
                     <td><input type="text" class="form-control" name="codigos[]"></td>
-                    <td><input type="text" class="form-control" name="cantidades[]"></td>
-                    <td><input type="text" class="form-control" name="subtotales[]"></td>
+                    <td><input type="text" class="form-control" id="columna1" name="cantidades[]"></td>
+                    <td><input type="text" class="form-control" id="columna2" name="costos[]" ></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
          
@@ -111,8 +116,8 @@ $(document).ready(function(){
         
         <label>Total</label>
         <input type="text" name="total" class="form-control"></input>
-        <input type="button" id="total" value="Calcular Total" class="btn btn-success"></input>
-		<center><input type="submit" value="Guardar compra" class="btn btn-primary" ></center>
+        <input type="button" id="total" value="Calcular Total" class="btn btn-info"></input>
+		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra"></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	</form>
@@ -138,7 +143,8 @@ $(document).ready(function(){
 $(function(){
     // Clona la fila oculta que tiene los campos base, y la agrega al final de la tabla
     $("#agregar").on('click', function(){
-        $("#tabla tbody tr:eq(0)").clone().removeClass('fila-base').appendTo("#tabla tbody");
+        $("#tabla")
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' ></input></td> <td></select><input type='text' class='form-control' id='columna1' name='cantidades[]' ></input></td> <td></select><input type='text' class='form-control' id='columna2' name='costos[]' ></input></td>  <td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td><tr>")
     });
  
     // Evento que selecciona la fila y la elimina 
@@ -147,15 +153,10 @@ $(function(){
         $(parent).remove();
     });
 
-    /*$(".texto").on('click', function(){
-        $("#capa").val($(this).val());
-    });*/
- 
 });
 
 
 </script>
-
 
 @endsection
 

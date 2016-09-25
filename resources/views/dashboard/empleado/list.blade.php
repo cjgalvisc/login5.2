@@ -42,7 +42,7 @@
             </thead>
             <tbody>
             @foreach($empleados as $empleado)
-	            @if($empleado->rol !=1)
+	            @if($empleado->rol!=1 && $empleado->estado!=2)
 	              <tr>
 	                <td>{{$empleado->cedula}}</td>
 	                <td>{{$empleado->name}}</td>

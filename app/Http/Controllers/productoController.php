@@ -39,6 +39,7 @@ class productoController extends Controller
         }else{
             $producto = new Producto();
             $producto->nombre = $request->input("nombre");
+            $producto->codigo=""
             $producto->unidad =  $request->input("unidad");
             $producto->costo =  $request->input("costo");
             $producto->precio =  $request->input("precio");

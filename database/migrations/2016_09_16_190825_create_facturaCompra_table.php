@@ -20,6 +20,8 @@ class CreateFacturaCompraTable extends Migration
             //llave foranea de proveedor
             $table->integer('id_proveedor')->unsigned();
             $table->foreign('id_proveedor')->references('id')->on('proveedor');
+            //establesco la llave primaria
+            
             $table->timestamps();
         });
     }

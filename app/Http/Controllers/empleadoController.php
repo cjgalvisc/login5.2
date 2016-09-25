@@ -114,14 +114,15 @@ class empleadoController extends Controller
 
     public function delete($id){
         $empleado=User::find($id);
-        $empleado->delete();
+        $empleado->estado="2";
+        $empleado->save();
         return redirect('empleado/list')->with('exito',"Empleado Eliminado con exito");
     }
 
-    public function search(){
-        $empleado=User::find($id);
-        $empleado->delete();
+   /* public function search(){
+        $empleado->estado="2";
+        $empleado->save();
         return redirect('empleado/list')->with('exito',"Empleado Eliminado con exito");
-    }
+    }*/
     
 }
