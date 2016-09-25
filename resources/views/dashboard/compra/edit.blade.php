@@ -34,14 +34,14 @@
                         </ol>
 <!--mensaje de error-->
 @if(Session::has('errors'))
-	<div class="alert alert-warning alert-dismissible" role="alert">
-	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  <ul>
-	  	@foreach($errors->all() as $error)
-			<li>{{$error}}</li>
-	  	@endforeach
-	  </ul>
-	</div>
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <ul>
+        @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+        @endforeach
+      </ul>
+    </div>
 @endif
 
 @if(Session::has('error'))
@@ -53,23 +53,27 @@
 
 
       <div class="form-group">
-      <form action="{{url('compra/store')}}" method="post" id="compra-crear" enctype="multipart/form-data">
+      <form action="{{url('compra/update',array('id'=>$compra->id))}}" method="post" id="compra-actualizar" enctype="multipart/form-data">
 
-		<label >Proveedor</label>
-		<select name="proveedor" class="form-control" id="lista_proveedores">
-			  @foreach($proveedores as $proveedor)
+        <label >Proveedor</label>
+        <select name="proveedor" class="form-control" id="lista_proveedores">
+              @foreach($proveedores as $proveedor)
                 @if( $proveedor->estado!=2)
-			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>	
-                @endif                                            	
-			  @endforeach
-		</select>
-		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
+                    @if($proveedor->id==$compra->id_proveedor)
+                        <option selected="" value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
+                    @else
+                        <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
+                    @endif
+                @endif                                              
+              @endforeach
+        </select>
+        <a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
 
-		<!--Campo para fecha-->
+        <!--Campo para fecha-->
         <div class="form-group">
             <label for="date">Fecha(DD/MM/YY)</label>
             <div class="input-group">
-                <input type="text" class="form-control datepicker" name="fecha">
+                <input type="text" class="form-control datepicker" name="fecha" value="{{$compra->fecha}}">
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -77,10 +81,10 @@
         </div>
 
 
-	    <!--Campo para guardar documento-->      
-		<div class="form-group">
-             	<label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
-				<input type="file" name="imagen" class="form-control" accept="image/*">
+        <!--Campo para guardar documento-->      
+        <div class="form-group">
+                <label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
+                <input type="file" name="imagen" class="form-control" accept="image/*" value="{{$compra->foto}}">
         </div>
 
 
@@ -100,26 +104,30 @@
          
             <!-- Cuerpo de la tabla con los campos -->
             <tbody>
-         
-                <!-- fila base para clonar y agregar al final -->
-                <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="codigos[]"></td>
-                    <td><input type="text" class="form-control" id="columna1" name="cantidades[]"></td>
-                    <td><input type="text" class="form-control" id="columna2" name="costos[]" ></td>
-                    <td><input type="text" class="form-control" id="columna2" name="subtotales[]" ></td>
-                    <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
-                </tr>
+            @foreach($detalles as $detalle)
+                @if($detalle->id_facturaCompra==$compra->id)
+                    <!-- fila base para clonar y agregar al final -->
+                    <tr class="fila-base">
+                        <td><input type="text" class="form-control" name="codigos[]" value="{{$detalle->id_producto}}"></td>
+                        <td><input type="text" class="form-control" id="columna1" name="cantidades[]" value="{{$detalle->cantidad}}"></td>
+                        <td><input type="text" class="form-control" id="columna2" name="costos[]" value="{{$detalle->subtotal}}"></td>
+                        <td><input type="text" class="form-control" id="columna2" name="subtotales[]" ></td>
+                        <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
+                    </tr>
+                @endif
+            @endforeach
+                
          
             </tbody>
         </table>
         
         <label>Total</label>
-        <input type="text" name="total" class="form-control"></input>
+        <input type="text" name="total" class="form-control" value="{{$compra->total}}"></input>
         <input type="button" id="total" value="Calcular Total" class="btn btn-info"></input>
-		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra"></center>
-		<input type="hidden" name="_token" value="{{csrf_token()}}">
+        <center><input type="submit" value="Actualizar compra" class="btn btn-success" id="guardar_compra"></center>
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-	</form>
+    </form>
       </div>
      
                     </div>

@@ -17,6 +17,7 @@ class CreateFacturaCompraTable extends Migration
             $table->date('fecha');
             $table->double('total');
             $table->string('foto');
+            $table->integer('estado');
             //llave foranea de proveedor
             $table->integer('id_proveedor')->unsigned();
             $table->foreign('id_proveedor')->references('id')->on('proveedor');

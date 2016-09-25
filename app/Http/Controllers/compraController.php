@@ -35,7 +35,7 @@ class compraController extends Controller
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
         $bandera=false;
-       $validator= Validator::make($request->all(),[
+        $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
             'total'=>"required|integer|between:0,100000000"
@@ -50,10 +50,11 @@ class compraController extends Controller
            }
        }
        
-        if($validator->fails()|| $bandera){
+        if($validator->fails()){
             return redirect()->back()->withErrors($validator->errors());
+        }else if($bandera){
+            return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
         }else{
-        
 
         //capturo las filas de la tabla de la factura
         $imagen=$_FILES['imagen']['name'];
@@ -62,7 +63,7 @@ class compraController extends Controller
         //instanciamos una nueva factura de compra
         $facturaCompra=new FacturaCompra();
         //datos para facturaCompra
-        $facturaCompra->fecha= date("Y-m-d",strtotime($request->input("fecha")));
+        $facturaCompra->fecha= date("Y-m-d", strtotime($request->input("fecha")));
         $facturaCompra->total=$request->input("total");
         $facturaCompra->foto=$imagen;
         $facturaCompra->id_proveedor=$request->input("proveedor");
@@ -96,18 +97,96 @@ class compraController extends Controller
             $compra->save();         
         }
 
+        return redirect('compra/list')->with('exito',"compra registrada con exito");
         } 	
         
     }
 
-    public function buscar(Request $request){
-        $producto1=$_POST['codigoProducto'];
-        foreach ($productos as $producto) {
-            if($producto->id==$producto1){
-                return redirect('compra/create')->with('exito');
-            }else{
-                return redirect('compra/create')->with('error');
-            }
+
+    public function edit(Request $request,$id){
+        $compra=FacturaCompra::find($id);
+        $detalles=Compra::all();
+        $proveedores=Proveedor::all();
+        return view('dashboard.compra.edit',array('compra'=>$compra,'proveedores'=>$proveedores,'detalles'=>$detalles)); 
+    }
+
+    public function update(Request $request,$id){
+        //captruo las filas de la tabla
+        $codigos=$_POST['codigos'];
+        $cantidades=$_POST['cantidades'];
+        $costos=$_POST['costos'];
+        $bandera=false;
+        $validator= Validator::make($request->all(),[
+            'fecha'=>"required",
+            'imagen'=>"required",
+            'total'=>"required|integer|between:0,100000000"
+        ]);
+        //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
+
+        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+       for ($i=0; $i <sizeof($codigos) ; $i++) { 
+           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
+            $bandera=true;
+            break;
+           }
+       }
+       
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator->errors());
+        }else if($bandera){
+            return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
+        }else{
+
+        //capturo las filas de la tabla de la factura
+        $imagen=$_FILES['imagen']['name'];
+        
+
+        //instanciamos una nueva factura de compra
+        $facturaCompra=FacturaCompra::find($id);
+        //datos para facturaCompra
+        $facturaCompra->fecha= date("Y-m-d", strtotime($request->input("fecha")));
+        $facturaCompra->total=$request->input("total");
+        $facturaCompra->foto=$imagen;
+        $facturaCompra->id_proveedor=$request->input("proveedor");
+        $facturaCompra->save();
+
+        //para subir la imagen al servidor
+        if(!move_uploaded_file($_FILES['imagen']['tmp_name'],"facturas/".$imagen)){
+            echo "erorr al subir documento";
+        }
+        //capturo el id con el cual fue guardado la factura
+        $id_factura=$facturaCompra->id;
+
+        //actualizo cada uno de los productos
+        for ($j=0; $j < sizeof($codigos); $j++) 
+        { 
+            $producto=Producto::find($codigos[$j]);
+            $producto->costo=(float)$costos[$j];
+            $producto->precio=(float)$costos[$j]+(float)$costos[$j]*(0.25);
+            $producto->cantidad=$producto->cantidad+(int)$cantidades[$j];
+            $producto->save();
+        }
+        
+        //creo cada una de las compras de la factura
+        for ($k=0; $k<sizeof($codigos); $k++) 
+        { 
+            $compra=new Compra();
+            $compra->cantidad=$cantidades[$k];
+            $compra->subtotal=$costos[$k]*$cantidades[$k];
+            $compra->id_producto=$codigos[$k];
+            $compra->id_facturaCompra=$id_factura;
+            $compra->save();         
+        }
+
+        return redirect('compra/list')->with('exito',"compra Actualizada con exito");
         }
     }
+    
+    public function delete($id){
+        $facturaCompra=FacturaCompra::find($id);
+        $facturaCompra->estado="2";
+        $facturaCompra->save();
+        return redirect('compra/list')->with('exito',"compra Eliminada con exito");
+        }
+    
 }

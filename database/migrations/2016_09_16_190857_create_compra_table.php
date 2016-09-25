@@ -16,6 +16,7 @@ class CreateCompraTable extends Migration
             $table->increments('id');
             $table->integer('cantidad');
             $table->double('subtotal');
+            $table->integer('estado');
             //llave foranea de facturaCompra
             $table->integer('id_producto')->unsigned();
             $table->foreign('id_producto')->references('id')->on('producto');
