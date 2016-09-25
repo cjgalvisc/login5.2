@@ -59,7 +59,8 @@ class tipoProductoController extends Controller
 
     public function delete($id){
         $tipoProducto=TipoProducto::find($id);
-        $tipoProducto->delete();
+        $tipoProducto->estado="2";
+        $tipoProducto->save();
         return redirect('tipoProducto/list')->with('exito',"Tipo de Producto Eliminado con exito");
     }
 }

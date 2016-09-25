@@ -48,7 +48,7 @@ class empleadoController extends Controller
             $empleado->name =  $request->input("name");
             $empleado->apellidos =  $request->input("apellidos");
             //convierto la fecha del datepick a date
-            $empleado->fechaNacimiento =  date("Y-m-d", strtotime($request->input("fechaNacimiento")));
+            $empleado->fechaNacimiento =  date("Y-m-d", strtotime($request->input("fechaNacimiento"))));
             $empleado->email =  $request->input("email");
             //encripto la contraaseña
             $empleado->password = bcrypt($request->input("password"));

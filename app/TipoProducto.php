@@ -9,7 +9,7 @@ class TipoProducto extends Model
     //
     protected $table='tipoProducto';
 	protected $primarykey='id';
-    protected $fillable = ['id','nombre'];
+    protected $fillable = ['id','nombre','estado'];
     public function producto(){
         return $this->hasMany(Producto::class);
     }

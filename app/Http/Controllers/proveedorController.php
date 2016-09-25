@@ -83,7 +83,8 @@ class proveedorController extends Controller
 
     public function delete($id){
         $proveedor=Proveedor::find($id);
-        $proveedor->delete();
+        $proveedor->estado="2";
+        $proveedor->save();
         return redirect('proveedor/list')->with('exito',"Proveedor Eliminado con exito");
     }
 

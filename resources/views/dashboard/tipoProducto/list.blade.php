@@ -25,7 +25,6 @@
     @if(count($tipoProductos)==0)
 		<h1> No hay Tipos de Productos Registrados</h1>
 	@else
-        <?php $contador=0; ?>
 		<table class="table table-striped">
             <thead>
               <tr>
@@ -36,14 +35,16 @@
             </thead>
             <tbody>
             @foreach($tipoProductos as $tipoProducto)
+                @if($tipoProducto->estado!=2)
 	              <tr>
-	                <td>{{$contador=$contador+1}}</td>
+	                <td>{{$tipoProducto->id}}</td>
 	                <td>{{$tipoProducto->nombre}}</td>
 	                <td>
                         <a href="{{url('tipoProducto/edit',array('id'=>$tipoProducto->id))}}" ><button type="button" class="btn btn-sm btn-success">editar</button></a>
                         <a href="{{url('tipoProducto/delete',array('id'=>$tipoProducto->id))}}" ><button type="button" class="btn btn-sm btn-danger">eliminar</button></a>
 	                </td>
 	              </tr>
+                @endif
             @endforeach
             </tbody>
          </table>

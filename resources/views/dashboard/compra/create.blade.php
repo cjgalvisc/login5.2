@@ -56,14 +56,14 @@ function producto(){
 
 
       <div class="form-group">
-      <form action="{{url('compra/store')}}" method="post" id="compra-crear">
-        <label># Factura</label>
-        <input type="text" name="id_factura" class="form-control"></input>
+      <form action="{{url('compra/store')}}" method="post" id="compra-crear" enctype="multipart/form-data">
 
 		<label >Proveedor</label>
 		<select name="proveedor" class="form-control" id="lista_proveedores">
 			  @foreach($proveedores as $proveedor)
-			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>		
+                @if( $proveedor->estado!=2)
+			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>	
+                @endif                                            	
 			  @endforeach
 		</select>
 		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
@@ -83,7 +83,7 @@ function producto(){
 	    <!--Campo para guardar documento-->      
 		<div class="form-group">
              	<label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
-				<input type="file" name="documento" class="form-control" accept="image/*">
+				<input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
 

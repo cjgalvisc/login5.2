@@ -69,14 +69,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-       
-                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Empleado<span class="fa arrow"> </a>
+                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Compras<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{url('empleado/create')}}">Ingresar</a>
+                                <a href="{{url('compra/create')}}">Ingresar</a>
                             </li>
                             <li>
-                                <a href="{{url('empleado/list')}}">Listar</a>
+                                <a href="{{url('compra/list')}}">Listar</a>
                             </li>
 
                         </ul>
@@ -91,16 +90,7 @@
                             </li>
 
                         </ul>
-                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Producto<span class="fa arrow"> </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{url('producto/create')}}">Ingresar</a>
-                            </li>
-                            <li>
-                                <a href="{{url('producto/list')}}">Listar</a>
-                            </li>
-                        </ul>
-                        
+
                         <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Tipo de Producto<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -111,16 +101,31 @@
                             </li>
 
                         </ul>
-                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Compras<span class="fa arrow"> </a>
+                        
+                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Producto<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{url('compra/create')}}">Ingresar</a>
+                                <a href="{{url('producto/create')}}">Ingresar</a>
                             </li>
                             <li>
-                                <a href="{{url('compra/list')}}">Listar</a>
+                                <a href="{{url('producto/list')}}">Listar</a>
+                            </li>
+                        </ul>
+                        
+                        
+
+                        <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Empleado<span class="fa arrow"> </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{url('empleado/create')}}">Ingresar</a>
+                            </li>
+                            <li>
+                                <a href="{{url('empleado/list')}}">Listar</a>
                             </li>
 
                         </ul>
+
+                        
                     </li>
                  
                 </ul>

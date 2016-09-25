@@ -28,6 +28,7 @@
 		<table class="table table-striped">
             <thead>
               <tr>
+                <th>Codigo</th>
                 <th>Nombre</th>
                 <th>Tipo</th>
                 <th>Proveedor</th>
@@ -40,16 +41,18 @@
             </thead>
             <tbody>
             @foreach($productos as $producto)
+                @if($producto->estado!=2)
 	              <tr>
+                    <td>{{$producto->id}}</td>
 	                <td>{{$producto->nombre}}</td>
                     @foreach($tipoProductos as $tipoProducto)
-                        @if($tipoProducto->id==$producto->id_tipoProducto)
+                        @if($tipoProducto->id==$producto->id_tipoProducto && $tipoProducto->estado!=2)
                             <td>{{$tipoProducto->nombre}}</td>
                         @endif
                     @endforeach
 
                     @foreach($proveedores as $proveedor)
-                        @if($proveedor->id==$producto->id_proveedor)
+                        @if($proveedor->id==$producto->id_proveedor && $proveedor->estado!=2)
                             <td>{{$proveedor->empresa}}</td>
                         @endif
                     @endforeach
@@ -62,6 +65,7 @@
                         <a href="{{url('producto/delete',array('id'=>$producto->id))}}" ><button type="button" class="btn btn-sm btn-danger">eliminar</button></a>
 	                </td>
 	              </tr>
+                @endif
             @endforeach
             </tbody>
          </table>

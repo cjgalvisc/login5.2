@@ -47,7 +47,9 @@
 		<label >Tipo Producto</label>
 		<select name="tipo" class="form-control">
 			  @foreach($tipoProductos as $tipoProducto)
+			  	@if($tipoProducto->estado!=2)
 			    	<option value="{{$tipoProducto->id}}">{{$tipoProducto->nombre}}</option>
+			    @endif
 			  @endforeach
 		</select>
 

@@ -39,6 +39,7 @@
             </thead>
             <tbody>
             @foreach($proveedores as $proveedor)
+                @if($proveedor->estado!=2)
 	              <tr>
 	                <td>{{$proveedor->nit}}</td>
 	                <td>{{$proveedor->empresa}}</td>
@@ -51,6 +52,7 @@
                         <a href="{{url('proveedor/delete',array('id'=>$proveedor->id))}}" ><button type="button" class="btn btn-sm btn-danger">eliminar</button></a>
 	                </td>
 	              </tr>
+                @endif
             @endforeach
             </tbody>
          </table>
