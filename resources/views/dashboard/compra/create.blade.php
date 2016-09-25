@@ -96,6 +96,7 @@ function producto(){
                     <th>Codigo Producto</th>
                     <th>Cantidad</th>
                     <th>Precio Unitario</th>
+                    <th>Subtotal</th>
                     <th>Opcion</th>
                 </tr>
             </thead>
@@ -108,6 +109,7 @@ function producto(){
                     <td><input type="text" class="form-control" name="codigos[]"></td>
                     <td><input type="text" class="form-control" id="columna1" name="cantidades[]"></td>
                     <td><input type="text" class="form-control" id="columna2" name="costos[]" ></td>
+                    <td><input type="text" class="form-control" id="columna2" name="subtotales[]" ></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
          
@@ -144,7 +146,7 @@ $(function(){
     // Clona la fila oculta que tiene los campos base, y la agrega al final de la tabla
     $("#agregar").on('click', function(){
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' ></input></td> <td></select><input type='text' class='form-control' id='columna1' name='cantidades[]' ></input></td> <td></select><input type='text' class='form-control' id='columna2' name='costos[]' ></input></td>  <td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td><tr>")
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' ></input></td> <td></select><input type='text' class='form-control' id='columna1' name='cantidades[]' ></input></td> <td></select><input type='text' class='form-control' id='columna2' name='costos[]' ></input></td>  <td><input type='text' class='form-control' id='columna2' name='subtotales[]' ></td> <td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td><tr>")
     });
  
     // Evento que selecciona la fila y la elimina 
