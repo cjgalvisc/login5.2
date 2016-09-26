@@ -15,6 +15,7 @@ class CreateCompraTable extends Migration
         Schema::create('compra', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cantidad');
+            $table->double('costoUnitario');
             $table->double('subtotal');
             $table->integer('estado');
             //llave foranea de facturaCompra

@@ -9,25 +9,37 @@ use App\Producto;
 use App\TipoProducto;
 use App\Proveedor;
 use Validator;
+use DB;
+
 class productoController extends Controller
 {
     public function index(){
-		$productos=Producto::all();
-        $tipoProductos=TipoProducto::all();
-        $proveedores=Proveedor::all();
+		$productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
+        $tipoProductos=DB::table('tipoProducto')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
     }
 
    public function create(){
-        $tipoProductos=TipoProducto::all();
-        $proveedores=Proveedor::all();
+        $tipoProductos=DB::table('tipoProducto')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.producto.create',array('tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));    
     }
 
     public function store(Request $request){
         //para validar todos los campos del formulario
         $validator= Validator::make($request->all(),[
-            'nombre'=>"required|alpha",
+            'nombre'=>"required|alpha_dash",
             'unidad'=>"required|alpha",
             'costo'=>"required|integer",
             'precio'=>"required|integer",
@@ -52,8 +64,12 @@ class productoController extends Controller
     }
     public function edit(Request $request,$id){
             $producto=Producto::find($id);
-            $tipoProductos=TipoProducto::all();
-        	$proveedores=Proveedor::all();
+            $tipoProductos=DB::table('tipoProducto')
+                        ->where('estado','<>','2')
+                        ->get();
+        	$proveedores=DB::table('proveedor')
+                        ->where('estado','<>','2')
+                        ->get();
             return view('dashboard.producto.edit',array('producto'=>$producto,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores)); 
         }
     

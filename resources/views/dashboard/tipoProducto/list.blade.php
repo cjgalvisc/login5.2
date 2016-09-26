@@ -35,7 +35,6 @@
             </thead>
             <tbody>
             @foreach($tipoProductos as $tipoProducto)
-                @if($tipoProducto->estado!=2)
 	              <tr>
 	                <td>{{$tipoProducto->id}}</td>
 	                <td>{{$tipoProducto->nombre}}</td>
@@ -44,7 +43,6 @@
                         <a href="{{url('tipoProducto/delete',array('id'=>$tipoProducto->id))}}" ><button type="button" class="btn btn-sm btn-danger">eliminar</button></a>
 	                </td>
 	              </tr>
-                @endif
             @endforeach
             </tbody>
          </table>

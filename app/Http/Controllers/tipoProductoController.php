@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\TipoProducto;
 use Validator;
+use DB;
 
 class tipoProductoController extends Controller
 {
 
     public function index(){
-		$tipoProductos=TipoProducto::all();
+		$tipoProductos=DB::table('tipoProducto')
+            ->where('estado','<>','2')
+            ->get();
         return view('dashboard.tipoProducto.list',array('tipoProductos'=>$tipoProductos));
     }
 

@@ -45,7 +45,7 @@
                 <option value="{{$producto->id}}">{{$producto->nombre}}</option>
             @endforeach
         </select>
-        <input type="button" class="btn btn-sm btn-success" align="center" value="submit"></input>
+        <input type="submit" class="btn btn-sm btn-success" align="center" value="filtrar"></input>
     </form>
 
     @if(count($facturas)==0)
@@ -64,7 +64,6 @@
             </thead>
             <tbody>
             @foreach($facturas as $factura)
-                @if($factura->estado!=2)
 	              <tr>
 	                <td>{{$factura->id}}</td>
 	                <td>{{$factura->fecha}}</td>
@@ -72,7 +71,7 @@
 	                <td><a class="btn btn-sm btn-success" href="/facturas/<?php echo $factura->foto; ?>" target="blank" >VER</a> </td>
 
                     @foreach($proveedores as $proveedor)
-                        @if($proveedor->id==$factura->id_proveedor && $proveedor->estado!=2)
+                        @if($proveedor->id==$factura->id_proveedor)
                             <td>{{$proveedor->empresa}}</td>
                         @endif
                     @endforeach
@@ -81,7 +80,6 @@
                         <a href="{{url('compra/delete',array('id'=>$factura->id))}}" ><button type="button" class="btn btn-sm btn-danger">eliminar</button></a>
 	                </td>
 	              </tr>
-                @endif
             @endforeach
             </tbody>
          </table>

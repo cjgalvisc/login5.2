@@ -24,7 +24,7 @@
 
     
     @if(count($resultados)==0)
-		<h1> No hay Facturas del proveedor {{$producto->nombre}}</h1>
+		<h1> No hay Facturas del producto {{$producto->nombre}}</h1>
 	@else
         <h1> Facturas del producto {{$producto->nombre}}</h1>
 		<table class="table table-striped ">
@@ -34,17 +34,19 @@
                 <th>Fecha</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Subtotal</th>
               </tr>
             </thead>
             <tbody>
-            @foreach($resultados as $resultado)
-                @if($resultado->estado!=2)
-	              <tr>
-	                <td>{{$resultado->id}}</td>
-	                <td>{{$resultado->fecha}}</td>
-	                <td>{{$resultado->total}}</td>
-	                <td><a class="btn btn-sm btn-success" href="/facturas/<?php echo $resultado->foto; ?>" target="blank" >VER</a> </td>
-	              </tr>
+            @foreach ($resultados as $resultado) 
+                @if($resultado->estado!= 2)
+                    <tr>
+                        <td>{{$resultado->id_facturaCompra}}</td>
+                        <td>{{$resultado->fecha}}</td>
+                        <td>{{$resultado->cantidad}}</td>
+                        <td>{{$resultado->costoUnitario}}</td>
+                        <td>{{$resultado->subtotal}}</td>
+                    </tr>
                 @endif
             @endforeach
             </tbody>

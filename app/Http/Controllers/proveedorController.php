@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Proveedor;
 use Validator;
+use DB;
 class proveedorController extends Controller
 {
     public function index(){
-		$proveedores=Proveedor::all();
+		$proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.proveedor.list',array('proveedores'=>$proveedores));
     }
 

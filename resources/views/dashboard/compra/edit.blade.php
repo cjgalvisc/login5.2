@@ -58,13 +58,11 @@
         <label >Proveedor</label>
         <select name="proveedor" class="form-control" id="lista_proveedores">
               @foreach($proveedores as $proveedor)
-                @if( $proveedor->estado!=2)
                     @if($proveedor->id==$compra->id_proveedor)
                         <option selected="" value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
                     @else
                         <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
-                    @endif
-                @endif                                              
+                    @endif                                             
               @endforeach
         </select>
         <a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>

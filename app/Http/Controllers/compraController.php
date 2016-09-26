@@ -19,15 +19,25 @@ use DB;
 class compraController extends Controller
 {
     public function index(){
-        $facturas=FacturaCompra::all();
-        $proveedores=Proveedor::all();
-        $productos=Producto::all();
+        $facturas=DB::table('facturaCompra')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
+        $productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos));    
     }
 
     public function create(){
-    	$proveedores=Proveedor::all();
-    	$productos=Producto::all();
+    	$proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
+    	$productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.compra.create',array('proveedores'=>$proveedores,'productos'=>$productos));    
     }
 
@@ -36,7 +46,8 @@ class compraController extends Controller
         $codigos=$_POST['codigos'];
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
-        $bandera=false;
+        $bandera1=false;
+        $bandera2=false;
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
@@ -45,19 +56,29 @@ class compraController extends Controller
         //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
 
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+        $productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
+        $contador=0;
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
-           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
-            $bandera=true;
-            break;
+           foreach ($productos as $producto) {
+               if($producto->id==$codigos[$i]){
+                    $contador++;
+               }
            }
        }
+       if($contador!=sizeof($codigos)){
+            $bandera2=true;
+       }
+
        
         if($validator->fails()){
             return redirect()->back()->withErrors($validator->errors());
-        }else if($bandera){
+        }else if($bandera1){
             return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
+        }else if($bandera2){
+            return redirect()->back()->with("error","alguno de los productos ingresados no existen");
         }else{
-
         //capturo las filas de la tabla de la factura
         $imagen=$_FILES['imagen']['name'];
         
@@ -93,6 +114,7 @@ class compraController extends Controller
         { 
             $compra=new Compra();
             $compra->cantidad=$cantidades[$k];
+            $compra->costoUnitario=$costos[$k];
             $compra->subtotal=$costos[$k]*$cantidades[$k];
             $compra->id_producto=$codigos[$k];
             $compra->id_facturaCompra=$id_factura;
@@ -107,8 +129,12 @@ class compraController extends Controller
 
     public function edit(Request $request,$id){
         $compra=FacturaCompra::find($id);
-        $detalles=Compra::all();
-        $proveedores=Proveedor::all();
+        $detalles=DB::table('compra')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    ->where('estado','<>','2')
+                    ->get();
         return view('dashboard.compra.edit',array('compra'=>$compra,'proveedores'=>$proveedores,'detalles'=>$detalles)); 
     }
 
@@ -117,6 +143,7 @@ class compraController extends Controller
         $codigos=$_POST['codigos'];
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
+        
         $bandera=false;
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
@@ -143,7 +170,7 @@ class compraController extends Controller
         $imagen=$_FILES['imagen']['name'];
         
 
-        //instanciamos una nueva factura de compra
+        //buscamos la factura de compra
         $facturaCompra=FacturaCompra::find($id);
         //datos para facturaCompra
         $facturaCompra->fecha= date("Y-m-d", strtotime($request->input("fecha")));
@@ -169,15 +196,20 @@ class compraController extends Controller
             $producto->save();
         }
         
-        //creo cada una de las compras de la factura
+        //actualizo cada una de las compras de la factura
         for ($k=0; $k<sizeof($codigos); $k++) 
         { 
-            $compra=new Compra();
-            $compra->cantidad=$cantidades[$k];
-            $compra->subtotal=$costos[$k]*$cantidades[$k];
-            $compra->id_producto=$codigos[$k];
-            $compra->id_facturaCompra=$id_factura;
-            $compra->save();         
+            $compras=Compra::all();
+            foreach ($compras as $compra) {
+                if($compra->id_facturaCompra==$id_factura){
+                    $compra->cantidad=$cantidades[$k];
+                    $compra->costoUnitario=$costos[$k];
+                    $compra->subtotal=$costos[$k]*$cantidades[$k];
+                    $compra->id_producto=$codigos[$k];
+                    $compra->id_facturaCompra=$id_factura;
+                    $compra->save();  
+                }
+            }       
         }
 
         return redirect('compra/list')->with('exito',"compra Actualizada con exito");
@@ -188,20 +220,46 @@ class compraController extends Controller
         $facturaCompra=FacturaCompra::find($id);
         $facturaCompra->estado="2";
         $facturaCompra->save();
+
+        $compras=Compra::all();
+        foreach ($compras as $compra) 
+        {
+            if($compra->id_facturaCompra==$id)
+            {
+                $compra->estado="2";
+                $compra->save();  
+            }
+        } 
+
         return redirect('compra/list')->with('exito',"compra Eliminada con exito");
         }
     
     public function filtroProveedor(Request $request){
         $pivote=$request->input('proveedor');
         $proveedor=Proveedor::find($pivote);
-        $resultados=DB::table('facturaCompra')->where('id_proveedor', '=',$pivote)->get();
+        $resultados=DB::table('facturaCompra')
+                    ->where('id_proveedor', '=',$pivote)
+                    ->where('estado','<>','2')
+                    ->get();
            return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
     }
 
     public function filtroProducto(Request $request){
-        $pivote=$request->input('proveedor');
-        $proveedor=Proveedor::find($pivote);
-        $resultados=DB::table('facturaCompra')->where('id_proveedor', '=',$pivote)->get();
+        $pivote=$request->input('producto');
+        $producto=Producto::find($pivote);
+        $resultados = DB::table('compra')
+            ->join('facturaCompra','compra.id_facturaCompra', '=', 'facturaCompra.id')
+            ->where('compra.id_producto','=',$pivote)
+            ->where('compra.estado','<>','2')
+            ->get();
+        return view('dashboard.compra.filtroProducto',array('resultados'=>$resultados,'producto'=>$producto));   
+    }
+
+    public function filtroFecha(Request $request){
+        $pivote=$request->input('fecha');
+        $resultados=DB::table('facturaCompra')->where('fecha', '<=',$pivote)->get();
            return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
     }
+
+    
 }
