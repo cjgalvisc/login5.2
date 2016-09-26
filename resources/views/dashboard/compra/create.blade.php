@@ -103,10 +103,10 @@
          
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="codigos[]"></td>
-                    <td><input type="text" class="form-control" id="columna1" name="cantidades[]"></td>
-                    <td><input type="text" class="form-control" id="columna2" name="costos[]" ></td>
-                    <td><input type="text" class="form-control" id="columna2" name="subtotales[]" ></td>
+                    <td><input type="text" class="form-control" name="0"></td>
+                    <td><input type="text" class="form-control" id="cantidad-0" name="0" onchange="calcular_total(this.name)" value="0"></td>
+                    <td><input type="text" class="form-control" id="costo-0" name="0" onchange="calcular_total(this.name)" value="0"></td>
+                    <td><input type="text" class="form-control-static" id="total-0" name="0" value="0" readonly></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
          
@@ -114,9 +114,9 @@
         </table>
         
         <label>Total</label>
-        <input type="text" name="total" class="form-control"></input>
-        <input type="button" id="total" value="Calcular Total" class="btn btn-info"></input>
-		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra"></center>
+        <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
+        <input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />
+		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	</form>
@@ -134,16 +134,68 @@
         language: "es",
         autoclose: true
     });
-</script>
 
+
+//var x= $("#lineas div").length + 1;
+var x=document.getElementById("tabla").rows.length-1;
+
+function calcular_total(i) {
+    importe_total = 0
+    a=0;
+    b=0;
+    var cantidad="#cantidad-".concat(i);
+    //alert(cantidad);
+    $(cantidad).each(
+        function(index, value) {
+            a =  eval($(this).val());
+        }
+    );
+    var costo="#costo-".concat(i);
+    $(costo).each(
+        function(index, value) {
+            b =  eval($(this).val());
+        }
+    );
+    var total="#total-".concat(i);
+    importe_total=a*b;
+    $(total).val(importe_total);
+    alerta();
+}
+
+
+</script>
+<script type="text/javascript">
+
+function alerta(){
+    
+    importe_total = 0
+    $(".form-control-static").each(
+        function(index, value) {
+            importe_total = importe_total + eval($(this).val());
+        }
+    );
+    $("#totales").val(importe_total);
+
+}
+
+
+</script>
 <!--script pra controlar los eventos de la tabla dinamica de compra-->
 <script type="text/javascript">
 
 $(function(){
     // Clona la fila oculta que tiene los campos base, y la agrega al final de la tabla
     $("#agregar").on('click', function(){
+        //alert(x);
+        var FieldCount = x-1; //para el seguimiento de los campos
+        FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' ></input></td> <td></select><input type='text' class='form-control' id='columna1' name='cantidades[]' ></input></td> <td></select><input type='text' class='form-control' id='columna2' name='costos[]' ></input></td>  <td><input type='text' class='form-control' id='columna2' name='subtotales[]' ></td> <td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td><tr>")
+        .append("<tr><td></select><input type='text' class='form-control' name='"+FieldCount+"'/></td>"+
+            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='"+FieldCount+"' onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
+            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='"+FieldCount+"' onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
+            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='"+FieldCount+"' value='0' readonly/></td> "+
+            "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
+        x++;
     });
  
     // Evento que selecciona la fila y la elimina 
@@ -153,6 +205,7 @@ $(function(){
     });
 
 });
+
 
 
 </script>
