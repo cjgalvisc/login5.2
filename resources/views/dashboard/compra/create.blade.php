@@ -103,10 +103,10 @@
          
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="0"></td>
-                    <td><input type="text" class="form-control" id="cantidad-0" name="0" onchange="calcular_total(this.name)" value="0"></td>
-                    <td><input type="text" class="form-control" id="costo-0" name="0" onchange="calcular_total(this.name)" value="0"></td>
-                    <td><input type="text" class="form-control-static" id="total-0" name="0" value="0" readonly></td>
+                    <td><input type="text" class="form-control" name="codigos[]" ></td>
+                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"></td>
+                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0"></td>
+                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
          
@@ -190,10 +190,10 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='"+FieldCount+"'/></td>"+
-            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='"+FieldCount+"' onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
-            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='"+FieldCount+"' onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
-            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='"+FieldCount+"' value='0' readonly/></td> "+
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]'/></td>"+
+            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
+            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
+            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
             "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
         x++;
     });
