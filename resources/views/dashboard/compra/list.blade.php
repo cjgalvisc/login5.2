@@ -22,32 +22,30 @@
 	</div>
 @endif
 
-    <form class="form-group" action="{{url('compra/filtroProveedor')}}" method="GET" >
+    <form action="{{url('compra/filtroProveedor')}}" class="form-group" method="get">
         <label>Proveedor</label>
         <select class="form-control" name="proveedor">
-                <option>Todos</option>
             @foreach($proveedores as $proveedor)
                 <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>
             @endforeach
         </select>
-        <input type="button" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
+        <input type="submit" class="btn btn-sm btn-success"  value="Filtrar"></input>
     </form>
 
     <form class="form-group" action="{{url('compra/filtroFecha')}}" method="GET" >
         <label>Fecha</label>
         <input type="date" name="fecha" class="form-control" ></input>
-        <input type="button" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
+        <input type="submit" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
     </form>
     
     <form class="form-group" action="{{url('compra/filtroProducto')}}" method="GET" >
         <label>Producto</label>
         <select class="form-control" name="producto">
-            <option>Todos</option>
             @foreach($productos as $producto)
                 <option value="{{$producto->id}}">{{$producto->nombre}}</option>
             @endforeach
         </select>
-        <input type="button" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
+        <input type="button" class="btn btn-sm btn-success" align="center" value="submit"></input>
     </form>
 
     @if(count($facturas)==0)
@@ -88,8 +86,8 @@
             </tbody>
          </table>
 	@endif
-                    </div>
-                </div>
-             </div>
+            </div>
+        </div>
+     </div>
 
 @endsection

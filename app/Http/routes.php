@@ -54,6 +54,7 @@ Route::group(['prefix'=>'producto'],function(){
 	Route::get("delete/{id}","productoController@delete");
 });
 
+
 //rutas para compra
 Route::group(['prefix'=>'compra'],function(){
 	Route::get("list","compraController@index");

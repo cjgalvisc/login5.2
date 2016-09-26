@@ -14,6 +14,8 @@ use App\Compra;
 
 use App\FacturaCompra;
 
+use DB;
+
 class compraController extends Controller
 {
     public function index(){
@@ -189,4 +191,17 @@ class compraController extends Controller
         return redirect('compra/list')->with('exito',"compra Eliminada con exito");
         }
     
+    public function filtroProveedor(Request $request){
+        $pivote=$request->input('proveedor');
+        $proveedor=Proveedor::find($pivote);
+        $resultados=DB::table('facturaCompra')->where('id_proveedor', '=',$pivote)->get();
+           return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
+    }
+
+    public function filtroProducto(Request $request){
+        $pivote=$request->input('proveedor');
+        $proveedor=Proveedor::find($pivote);
+        $resultados=DB::table('facturaCompra')->where('id_proveedor', '=',$pivote)->get();
+           return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
+    }
 }
