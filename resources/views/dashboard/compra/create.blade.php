@@ -115,7 +115,7 @@
         
         <label>Total</label>
         <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
-        <input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />
+        <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
 		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
