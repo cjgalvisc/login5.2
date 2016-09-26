@@ -58,10 +58,10 @@ class proveedorController extends Controller
         //para validar todos los campos del formulario
         $validator= Validator::make($request->all(),[
             'cedula'=>"required|alpha_num|min:8|max:10",
-            'nombre'=>"required|alpha",
-            'apellido'=>"required|alpha",
+            'nombre'=>"required|alpha_dash",
+            'apellido'=>"required|alpha_dash",
             'telefono'=>"required|alpha_num|min:6|max:10",
-            'empresa'=>"required|alpha",
+            'empresa'=>"required|alpha_dash",
             'nit'=>"required|alpha_num"
         ]);
         //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados

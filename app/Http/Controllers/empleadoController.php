@@ -28,8 +28,8 @@ class empleadoController extends Controller
         //para validar todos los campos del formulario
         $validator= Validator::make($request->all(),[
             'cedula'=>"required|alpha_num|min:8|max:10",
-            'name'=>"required|alpha",
-            'apellidos'=>"required|alpha",
+            'name'=>"required|alpha_dash",
+            'apellidos'=>"required|alpha_dash",
             'fechaNacimiento'=>"required|before:1996",
             'email'=>"required",
             'password'=>"required",
