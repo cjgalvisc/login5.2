@@ -53,7 +53,14 @@ class compraController extends Controller
             'imagen'=>"required",
             'total'=>"required|integer|between:0,100000000"
         ]);
-        //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
+        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+       for ($i=0; $i <sizeof($codigos) ; $i++) { 
+           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
+            $bandera1=true;
+            break;
+           }
+       }
+       
 
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
         $productos=DB::table('producto')
@@ -159,11 +166,30 @@ class compraController extends Controller
             break;
            }
        }
+        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+        $productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
+        $contador=0;
+       for ($i=0; $i <sizeof($codigos) ; $i++) { 
+           foreach ($productos as $producto) {
+               if($producto->id==$codigos[$i]){
+                    $contador++;
+               }
+           }
+       }
+       if($contador!=sizeof($codigos)){
+            $bandera2=true;
+       }
+
        
         if($validator->fails()){
             return redirect()->back()->withErrors($validator->errors());
-        }else if($bandera){
+        }else if($bandera1){
             return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
+        }else if($bandera2){
+            return redirect()->back()->with("error","alguno de los productos ingresados no existen");
+        
         }else{
 
         //capturo las filas de la tabla de la factura
@@ -257,8 +283,16 @@ class compraController extends Controller
 
     public function filtroFecha(Request $request){
         $pivote=$request->input('fecha');
-        $resultados=DB::table('facturaCompra')->where('fecha', '<=',$pivote)->get();
-           return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
+        $resultados=DB::table('facturaCompra')
+                    ->where('fecha', '<=',$pivote)
+                    ->where('estado','<>','2')
+                    ->get();
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'pivote'=>$pivote));  
+    }
+
+    public function reporte($tipo)
+    {
+        
     }
 
     

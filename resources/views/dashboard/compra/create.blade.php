@@ -65,7 +65,7 @@
 
 		<!--Campo para fecha-->
         <div class="form-group">
-            <label for="date">Fecha(DD/MM/YY)</label>
+            <label for="date">Fecha(año/mes/dia)</label>
             <div class="input-group">
                 <input type="text" class="form-control datepicker" name="fecha">
                 <div class="input-group-addon">
@@ -126,13 +126,16 @@
 
 
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->
+
 <script>
    $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
+        format: "yyyy/mm/dd",
         language: "es",
         autoclose: true
     });
+</script>
 
+<script>
 
 //var x= $("#lineas div").length + 1;
 var x=document.getElementById("tabla").rows.length-1;
@@ -162,6 +165,7 @@ function calcular_total(i) {
 
 
 </script>
+
 <script type="text/javascript">
 
 function alerta(){

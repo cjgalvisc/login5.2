@@ -128,7 +128,7 @@
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->
 <script>
    $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
+        format: "yyyy/mm/dd",
         language: "es",
         autoclose: true
     });

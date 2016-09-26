@@ -66,6 +66,7 @@ Route::group(['prefix'=>'compra'],function(){
 	Route::get("filtroProveedor","compraController@filtroProveedor");
 	Route::get("filtroFecha","compraController@filtroFecha");
 	Route::get("filtroProducto","compraController@filtroProducto");
+	Route::get("reporte","compraController@reporte");
 });
 
 
