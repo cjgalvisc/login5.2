@@ -96,6 +96,7 @@ class compraController extends Controller
         $facturaCompra->fecha= date("Y-m-d", strtotime($request->input("fecha")));
         $facturaCompra->total=$request->input("total");
         $facturaCompra->foto=$imagen;
+        $facturaCompra->estado="1";
         $facturaCompra->id_proveedor=$request->input("proveedor");
         $facturaCompra->save();
 
@@ -123,6 +124,7 @@ class compraController extends Controller
             $compra->cantidad=$cantidades[$k];
             $compra->costoUnitario=$costos[$k];
             $compra->subtotal=$costos[$k]*$cantidades[$k];
+            $compra->estado="1";
             $compra->id_producto=$codigos[$k];
             $compra->id_facturaCompra=$id_factura;
             $compra->save();         
@@ -278,6 +280,7 @@ class compraController extends Controller
             ->where('compra.id_producto','=',$pivote)
             ->where('compra.estado','<>','2')
             ->get();
+
         return view('dashboard.compra.filtroProducto',array('resultados'=>$resultados,'producto'=>$producto));   
     }
 
@@ -290,9 +293,27 @@ class compraController extends Controller
            return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'pivote'=>$pivote));  
     }
 
-    public function reporte($tipo)
+
+
+    public function reporte()
     {
+        $vistaurl="dashboard.pdf.reporte";
+
+        $facturas=DB::table('facturaCompra')
+                    ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
+                    ->where('facturaCompra.estado','<>','2')
+                    ->select('facturaCompra.id', 'facturaCompra.fecha', 'proveedor.empresa','facturaCompra.total')
+                    ->get();
+
+        $date = date('Y-m-d');
+        $view =  \View::make($vistaurl, compact('facturas', 'date'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
         
+        return $pdf->download('reporte.pdf');
+
+        /*if($tipo==1){return $pdf->stream('reporte');}*/
+
     }
 
     
