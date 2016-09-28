@@ -53,5 +53,7 @@
                     </div>
                 </div>
              </div>
+             <a href="{{url('compra/list')}}" ><button type="button" class="btn btn-sm btn-primary">LISTAR COMPRAS</button></a>
+             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
 
 @endsection

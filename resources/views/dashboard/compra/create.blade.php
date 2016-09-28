@@ -123,6 +123,7 @@
                     </div>
                 </div>
              </div>
+             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
 
 
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->

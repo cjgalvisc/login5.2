@@ -82,7 +82,7 @@
     </form>
 
     @if(count($facturas)==0)
-		<h1> No hay Facturas Registrados</h1>
+		<h1> No hay Facturas Registradas</h1>
 	@else
 		<table class="table table-striped ">
             <thead>
@@ -122,6 +122,8 @@
      </div>
 
     <a href="{{url('compra/reporte')}}" ><button type="button" class="btn btn-sm btn-primary">Descargar Pdf</button></a>
+    
+             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
     
 <script>
    $('.datepicker').datepicker({
