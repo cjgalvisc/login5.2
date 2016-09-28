@@ -101,9 +101,15 @@
          
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
+<<<<<<< HEAD
                     <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" id="id_codigo"></td>
                     <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
                     <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal "></td>
+=======
+                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,}" ></td>
+                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,}" title="Este numero debe ser un entero"></td>
+                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,}" title="Este valor debe ser un numero entero o decimal "></td>
+>>>>>>> origin/master
                     <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
@@ -192,9 +198,15 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
+<<<<<<< HEAD
         .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,25}' id='id_codigo' /></td>"+
             "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,25}'' title='Este numero debe ser un entero'/></td>"+
             " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,25}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
+=======
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,}' /></td>"+
+            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,}'' title='Este numero debe ser un entero'/></td>"+
+            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
+>>>>>>> origin/master
             " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
             "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
         x++;
