@@ -108,7 +108,7 @@ table {
 <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
-                  <center><h3 class="box-title">Reporte de Facturas</h3></center>
+                  <center><h3 class="box-title">Reporte de Facturas {{$date}}</h3></center>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table class="table table-bordered">
@@ -121,6 +121,7 @@ table {
                     </tr>
                   </thead>
                     <tbody>
+                    <?php $total=0; ?>
                  @foreach($facturas as $factura)
                     <tr>
                       <td align="center" style="width: 40px">{{$factura->id}}</td>
@@ -128,17 +129,19 @@ table {
                       <td align="center" style="width: 40px">{{$factura->empresa}}</td>
                       <td align="center" style="width: 40px">$ <?php echo number_format($factura->total,0); ?></td>
                     </tr>
+                    <?php $total=$total+($factura->total); ?>
                   @endforeach
                   </tbody>
 
                   </table>
+
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
                   
                 </div>
               </div><!-- /.box -->
 
-              
+              <h3>Total: $ <?php echo number_format($total,0); ?></h3>
             </div>
 
 

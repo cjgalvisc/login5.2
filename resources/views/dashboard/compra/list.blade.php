@@ -56,7 +56,19 @@
                 <span class="glyphicon glyphicon-th"></span>
             </div>
         </div>
-        <input type="submit" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
+        <label class="radio-inline">
+        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="MenorIgual") echo "checked";?> value="MenorIgual">MenorIgual
+        </label>
+        <label class="radio-inline">
+        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="MayorIgual") echo "checked";?> value="MayorIgual">MayorIgual
+        </label>
+        <label class="radio-inline">
+        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="Igual") echo "checked";?> value="Igual">Igual
+        </label>
+        <div>
+            <input type="submit" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>       
+        </div>
+        
     </form>
     
     <form class="form-group" action="{{url('compra/filtroProducto')}}" method="GET" >

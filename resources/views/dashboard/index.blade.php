@@ -113,7 +113,7 @@
                         </ul>
                         
                         
-
+                        <!--
                         <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Empleado<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -124,7 +124,7 @@
                             </li>
 
                         </ul>
-
+                        -->
                         
                     </li>
                  

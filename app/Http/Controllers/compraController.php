@@ -139,6 +139,7 @@ class compraController extends Controller
     public function edit(Request $request,$id){
         $compra=FacturaCompra::find($id);
         $detalles=DB::table('compra')
+                    ->where('id_facturaCompra','=',$id)
                     ->where('estado','<>','2')
                     ->get();
         $proveedores=DB::table('proveedor')
@@ -152,22 +153,22 @@ class compraController extends Controller
         $codigos=$_POST['codigos'];
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
-        
-        $bandera=false;
+        $bandera1=false;
+        $bandera2=false;
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
             'total'=>"required|integer|between:0,100000000"
         ]);
-        //si existen errores en la validacion me devuelvo a la misma pagina pero con los errores encontrados
-
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
            if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
-            $bandera=true;
+            $bandera1=true;
             break;
            }
        }
+       
+
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
         $productos=DB::table('producto')
                     ->where('estado','<>','2')
@@ -191,7 +192,6 @@ class compraController extends Controller
             return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
         }else if($bandera2){
             return redirect()->back()->with("error","alguno de los productos ingresados no existen");
-        
         }else{
 
         //capturo las filas de la tabla de la factura
@@ -285,12 +285,33 @@ class compraController extends Controller
     }
 
     public function filtroFecha(Request $request){
-        $pivote=$request->input('fecha');
-        $resultados=DB::table('facturaCompra')
+        $opcion=$request->input('gender');
+        if($opcion=='MayorIgual'){
+            $pivote=$request->input('fecha');
+            $texto='Facturas Mayores o iguales a la fecha '.$pivote;
+            $resultados=DB::table('facturaCompra')
+                    ->where('fecha', '>=',$pivote)
+                    ->where('estado','<>','2')
+                    ->get();
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto));
+
+        }else if($opcion=='MenorIgual'){
+            $pivote=$request->input('fecha');
+            $texto='Facturas Menores o iguales a la fecha '.$pivote;
+            $resultados=DB::table('facturaCompra')
                     ->where('fecha', '<=',$pivote)
                     ->where('estado','<>','2')
                     ->get();
-           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'pivote'=>$pivote));  
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto));
+        }else if($opcion=='Igual' || $opcion==''){
+            $pivote=$request->input('fecha');
+            $texto='Facturas Iguales a la fecha '.$pivote;
+            $resultados=DB::table('facturaCompra')
+                    ->where('fecha', '=',$pivote)
+                    ->where('estado','<>','2')
+                    ->get();
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto));
+        }
     }
 
 
@@ -313,8 +334,19 @@ class compraController extends Controller
         return $pdf->download('reporte.pdf');
 
         /*if($tipo==1){return $pdf->stream('reporte');}*/
+    }  
 
-    }
+    /*public function ajaxProducto(){
+        $id_proveedor=$_GET['id_proveedor'];
+        $id_codigo=$_GET['id_codigo'];
+        $consulta=DB::table('producto')
+            ->where('id','=',$id_codigo)
+            ->where('id_proveedor','=',$id_proveedor)
+            ->get();
 
-    
+        if(!$consulta){
+            echo "falso";
+        }
+
+    }*/
 }

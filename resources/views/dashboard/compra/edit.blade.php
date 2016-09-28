@@ -53,23 +53,23 @@
 
 
       <div class="form-group">
-      <form action="{{url('compra/update',array('id'=>$compra->id))}}" method="post" id="compra-actualizar" enctype="multipart/form-data">
+      <form action="{{url('compra/update',array('id'=>$compra->id))}}" method="post" id="compra-crear" enctype="multipart/form-data">
 
         <label >Proveedor</label>
         <select name="proveedor" class="form-control" id="lista_proveedores">
               @foreach($proveedores as $proveedor)
-                    @if($proveedor->id==$compra->id_proveedor)
-                        <option selected="" value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
-                    @else
-                        <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option> 
-                    @endif                                             
+                @if($proveedor->id==$compra->id_proveedor)
+                    <option selected="" value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>
+                @else
+                    <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>
+                @endif                       
               @endforeach
         </select>
         <a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
 
         <!--Campo para fecha-->
         <div class="form-group">
-            <label for="date">Fecha(DD/MM/YY)</label>
+            <label for="date">Fecha(año/mes/dia)</label>
             <div class="input-group">
                 <input type="text" class="form-control datepicker" name="fecha" value="{{$compra->fecha}}">
                 <div class="input-group-addon">
@@ -82,7 +82,7 @@
         <!--Campo para guardar documento-->      
         <div class="form-group">
                 <label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
-                <input type="file" name="imagen" class="form-control" accept="image/*" value="{{$compra->foto}}">
+                <input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
 
@@ -103,26 +103,22 @@
             <!-- Cuerpo de la tabla con los campos -->
             <tbody>
             @foreach($detalles as $detalle)
-                @if($detalle->id_facturaCompra==$compra->id)
-                    <!-- fila base para clonar y agregar al final -->
-                    <tr class="fila-base">
-                        <td><input type="text" class="form-control" name="codigos[]" value="{{$detalle->id_producto}}"></td>
-                        <td><input type="text" class="form-control" id="columna1" name="cantidades[]" value="{{$detalle->cantidad}}"></td>
-                        <td><input type="text" class="form-control" id="columna2" name="costos[]" value="{{$detalle->subtotal}}"></td>
-                        <td><input type="text" class="form-control" id="columna2" name="subtotales[]" ></td>
-                        <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
-                    </tr>
-                @endif
+                <!-- fila base para clonar y agregar al final -->
+                <tr class="fila-base">
+                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" id="id_codigo" value="{{$detalle->id_producto}}"></td>
+                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
+                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal " ></td>
+                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
+                    <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
+                </tr>
             @endforeach
-                
-         
             </tbody>
         </table>
         
         <label>Total</label>
-        <input type="text" name="total" class="form-control" value="{{$compra->total}}"></input>
-        <input type="button" id="total" value="Calcular Total" class="btn btn-info"></input>
-        <center><input type="submit" value="Actualizar compra" class="btn btn-success" id="guardar_compra"></center>
+        <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
+        <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
+        <center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
     </form>
@@ -134,22 +130,78 @@
 
 
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->
+
 <script>
    $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
+        format: "yyyy/mm/dd",
         language: "es",
         autoclose: true
     });
 </script>
 
+<script>
+
+//var x= $("#lineas div").length + 1;
+var x=document.getElementById("tabla").rows.length-1;
+
+function calcular_total(i) {
+    importe_total = 0
+    a=0;
+    b=0;
+    var cantidad="#cantidad-".concat(i);
+    //alert(cantidad);
+    $(cantidad).each(
+        function(index, value) {
+            a =  eval($(this).val());
+        }
+    );
+    var costo="#costo-".concat(i);
+    $(costo).each(
+        function(index, value) {
+            b =  eval($(this).val());
+        }
+    );
+    var total="#total-".concat(i);
+    importe_total=a*b;
+    $(total).val(importe_total);
+    alerta();
+}
+
+
+</script>
+
+<script type="text/javascript">
+
+function alerta(){
+    
+    importe_total = 0
+    $(".form-control-static").each(
+        function(index, value) {
+            importe_total = importe_total + eval($(this).val());
+        }
+    );
+    $("#totales").val(importe_total);
+
+}
+
+
+</script>
 <!--script pra controlar los eventos de la tabla dinamica de compra-->
 <script type="text/javascript">
 
 $(function(){
     // Clona la fila oculta que tiene los campos base, y la agrega al final de la tabla
     $("#agregar").on('click', function(){
+        //alert(x);
+        var FieldCount = x-1; //para el seguimiento de los campos
+        FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' ></input></td> <td></select><input type='text' class='form-control' id='columna1' name='cantidades[]' ></input></td> <td></select><input type='text' class='form-control' id='columna2' name='costos[]' ></input></td>  <td><input type='text' class='form-control' id='columna2' name='subtotales[]' ></td> <td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td><tr>")
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,25}' id='id_codigo' /></td>"+
+            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,25}'' title='Este numero debe ser un entero'/></td>"+
+            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,25}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
+            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
+            "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
+        x++;
     });
  
     // Evento que selecciona la fila y la elimina 
@@ -160,9 +212,23 @@ $(function(){
 
 });
 
-
 </script>
+<!--
+<script type="text/javascript">
+    $("#id_codigo").change(function(){
+        var datosBD={id_proveedor:$("#lista_proveedores").val(),
+                    id_codigo:$(this).val()};
+        $.get("compra/ajaxProducto",datosBD,procesarDatos);
+        return false;
+    });
 
+    function procesarDatos(datos_devueltos){
+        if(datos_devueltos=="falso"){
+            alert("producto no es del proveedor");
+        }
+    }
+</script>
+-->
 @endsection
 
 

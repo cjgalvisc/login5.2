@@ -58,7 +58,7 @@
 		<label >Proveedor</label>
 		<select name="proveedor" class="form-control" id="lista_proveedores">
 			  @foreach($proveedores as $proveedor)
-			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>	                                         	
+			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>                      	
 			  @endforeach
 		</select>
 		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
@@ -101,7 +101,7 @@
          
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" ></td>
+                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" id="id_codigo"></td>
                     <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
                     <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal "></td>
                     <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
@@ -192,7 +192,7 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,25}' /></td>"+
+        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,25}' id='id_codigo' /></td>"+
             "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,25}'' title='Este numero debe ser un entero'/></td>"+
             " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,25}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
             " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
@@ -208,10 +208,23 @@ $(function(){
 
 });
 
-
-
 </script>
+<!--
+<script type="text/javascript">
+    $("#id_codigo").change(function(){
+        var datosBD={id_proveedor:$("#lista_proveedores").val(),
+                    id_codigo:$(this).val()};
+        $.get("compra/ajaxProducto",datosBD,procesarDatos);
+        return false;
+    });
 
+    function procesarDatos(datos_devueltos){
+        if(datos_devueltos=="falso"){
+            alert("producto no es del proveedor");
+        }
+    }
+</script>
+-->
 @endsection
 
 

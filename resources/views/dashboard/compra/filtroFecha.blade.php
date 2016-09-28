@@ -24,9 +24,9 @@
 
     
     @if(count($resultados)==0)
-		<h1> No hay Facturas de la fecha {{$pivote}}</h1>
+		<h1> No hay {{$texto}}</h1>
 	@else
-        <h1> Facturas de la fecha {{$pivote}}</h1>
+        <h1> {{$texto}}</h1>
 		<table class="table table-striped ">
             <thead>
               <tr>
