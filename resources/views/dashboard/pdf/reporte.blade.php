@@ -98,20 +98,39 @@ table {
 .bg-red {
     background-color: #dd4b39 !important;
 }
+footer { 
+  width: 700px;
+  font: 140% 'News Cycle', arial, sans-serif;
+  height: 50px;
+  padding: 9px 0 15px 0;
+  color: #FFF;
+  text-align: center;
+  background: #333; /* Show a solid color for older browsers */
+  background: -moz-linear-gradient(#444, #222);
+  background: -o-linear-gradient(#444, #222);
+  background: -webkit-linear-gradient(#444, #222);
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  border: 1px solid #222;
+}
 
 
 </style>
 	  
 </head>
-<body>
+<body > 
 
 <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
+                  <div align="center"><img src="reporte/REPORTEa.jpg" style="width: 700px;" >
+                    <img src="reporte/INFORME.png" style="float:left; margin:10px;" width=80 height=55 ><BR><BR>
+                  </div>
                   <center><h3 class="box-title">Reporte de Facturas {{$date}}</h3></center>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table class="table table-bordered">
+                  <table class="table table-bordered" border="1" width="90%">
                   <thead>
                      <tr>
                       <th style="width: 40px">Codigo Factura</th>
@@ -141,7 +160,12 @@ table {
                 </div>
               </div><!-- /.box -->
 
-              <h3>Total: $ <?php echo number_format($total,0); ?></h3>
+              <h3 align="right">Total: $ <?php echo number_format($total,0); ?></h3>
+              <footer >
+               <!-- pie de pagina-->
+               
+              <p>Copyright & copy 2016;Powered By CJG & YAO | systemContab.co</p>
+            </footer>
             </div>
 
 
