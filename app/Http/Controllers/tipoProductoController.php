@@ -66,5 +66,22 @@ class tipoProductoController extends Controller
         $tipoProducto->save();
         return redirect('tipoProducto/list')->with('exito',"Tipo de Producto Eliminado con exito");
     }
+    public function ordenar(){
+        $tipoProductos=DB::table('tipoProducto')
+            ->orderBy('nombre','asc')
+            ->where('estado','<>','2')
+            ->get();
+        return view('dashboard.tipoProducto.list',array('tipoProductos'=>$tipoProductos));
+    }
+
+    public function search(Request $request){
+        $codigo=$request->input('codigo');
+        $tipoProductos=DB::table('tipoProducto')
+            ->where('id','=',$codigo)
+            ->where('estado','<>','2')
+            ->get();
+        return view('dashboard.tipoProducto.list',array('tipoProductos'=>$tipoProductos));
+
+    }
 }
 ?>

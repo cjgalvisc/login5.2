@@ -21,6 +21,17 @@
 	  {{Session::get('exito')}}
 	</div>
 @endif
+<form action="{{url('proveedor/search')}}" method="post" >
+    <LABEL>Empresa:</LABEL>
+    <input type="text" name="empresa" ></input>
+    <input type="submit" value="Buscar" class="btn btn-sm btn-primary"> 
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+</form>
+
+<LABEL>Ordenar por:</LABEL>
+<br>
+<a href="{{url('proveedor/ordenarEmpresa')}}"  ><button type="button" class="btn btn-sm btn-primary">Empresa</button></a>
+<a href="{{url('proveedor/ordenarVendedor')}}"  ><button type="button" class="btn btn-sm btn-primary">Vendedor</button></a>
 
     @if(count($proveedores)==0)
 		<h1> No hay Proveedores Registrados</h1>

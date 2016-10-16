@@ -34,6 +34,9 @@ Route::group(['prefix'=>'proveedor'],function(){
 	Route::get("edit/{id}","proveedorController@edit");
 	Route::post("update/{id}","proveedorController@update");
 	Route::get("delete/{id}","proveedorController@delete");
+	Route::get("ordenarEmpresa","proveedorController@ordenarEmpresa");
+	Route::get("ordenarVendedor","proveedorController@ordenarVendedor");
+	Route::post("search","proveedorController@search");
 });
 //rutas para tipoProducto
 Route::group(['prefix'=>'tipoProducto'],function(){
@@ -43,6 +46,8 @@ Route::group(['prefix'=>'tipoProducto'],function(){
 	Route::get("edit/{id}","tipoProductoController@edit");
 	Route::post("update/{id}","tipoProductoController@update");
 	Route::get("delete/{id}","tipoProductoController@delete");
+	Route::get("ordenar","tipoProductoController@ordenar");
+	Route::post("search","tipoProductoController@search");
 });
 //rutas para producto
 Route::group(['prefix'=>'producto'],function(){
@@ -52,6 +57,11 @@ Route::group(['prefix'=>'producto'],function(){
 	Route::get("edit/{id}","productoController@edit");
 	Route::post("update/{id}","productoController@update");
 	Route::get("delete/{id}","productoController@delete");
+	Route::get("ordenarNombre","productoController@ordenarNombre");
+	Route::get("ordenarPrecio","productoController@ordenarPrecio");
+	Route::get("ordenarCantidad","productoController@ordenarCantidad");
+	Route::post("search","productoController@search");
+
 });
 
 

@@ -91,9 +91,28 @@ class proveedorController extends Controller
         return redirect('proveedor/list')->with('exito',"Proveedor Eliminado con exito");
     }
 
-   /* public function search(){
-        $proveedor=User::find($id);
-        $proveedor->delete();
-        return redirect('proveedor/list')->with('exito',"Proveedor Eliminado con exito");
-    }*/
+    public function ordenarEmpresa(){
+        $proveedores=DB::table('proveedor')
+                    ->orderBy('empresa','asc')
+                    ->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.proveedor.list',array('proveedores'=>$proveedores));
+    }
+
+    public function ordenarVendedor(){
+        $proveedores=DB::table('proveedor')
+                    ->orderBy('nombre','asc')
+                    ->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.proveedor.list',array('proveedores'=>$proveedores));
+    }
+
+   public function search(Request $request){
+        $empresa=$request->input('empresa');
+        $proveedores=DB::table('proveedor')
+                    ->where('empresa','=',$empresa)
+                    ->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.proveedor.list',array('proveedores'=>$proveedores));
+    }
 }

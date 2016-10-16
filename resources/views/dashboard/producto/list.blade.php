@@ -22,6 +22,19 @@
 	</div>
 @endif
 
+<form action="{{url('producto/search')}}" method="post" >
+    <LABEL>Codigo:</LABEL>
+    <input type="text" name="codigo" ></input>
+    <input type="submit" value="Buscar" class="btn btn-sm btn-primary"> 
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+</form>
+
+<br>
+<LABEL>Ordenar por:</LABEL>
+<br>
+<a href="{{url('producto/ordenarNombre')}}"  ><button type="button" class="btn btn-sm btn-primary">Nombre</button></a>
+<a href="{{url('producto/ordenarPrecio')}}"  ><button type="button" class="btn btn-sm btn-primary">Precio</button></a>
+<a href="{{url('producto/ordenarCantidad')}}"  ><button type="button" class="btn btn-sm btn-primary">Cantidad</button></a>
     @if(count($productos)==0)
 		<h1> No hay Productos Registrados</h1>
 	@else

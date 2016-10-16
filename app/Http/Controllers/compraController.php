@@ -269,6 +269,7 @@ class compraController extends Controller
                     ->where('id_proveedor', '=',$pivote)
                     ->where('estado','<>','2')
                     ->get();
+
            return view('dashboard.compra.filtroProveedor',array('resultados'=>$resultados,'proveedor'=>$proveedor));     
     }
 
@@ -335,8 +336,9 @@ class compraController extends Controller
 
         /*if($tipo==1){return $pdf->stream('reporte');}*/
     }  
-
-    /*public function ajaxProducto(){
+/*
+    public function ajaxProducto()
+    {
         $id_proveedor=$_GET['id_proveedor'];
         $id_codigo=$_GET['id_codigo'];
         $consulta=DB::table('producto')
@@ -347,6 +349,6 @@ class compraController extends Controller
         if(!$consulta){
             echo "falso";
         }
-
-    }*/
+    }
+    */
 }

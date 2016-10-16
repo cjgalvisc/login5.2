@@ -16,12 +16,13 @@ class productoController extends Controller
     public function index(){
 		$productos=DB::table('producto')
                     ->where('estado','<>','2')
+                    //->paginate(15)
                     ->get();
         $tipoProductos=DB::table('tipoProducto')
-                    ->where('estado','<>','2')
+                    //->where('estado','<>','2')
                     ->get();
         $proveedores=DB::table('proveedor')
-                    ->where('estado','<>','2')
+                    //->where('estado','<>','2')
                     ->get();
         return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
     }
@@ -106,5 +107,65 @@ class productoController extends Controller
         $producto->estado = "2";
         $producto->save();
         return redirect('producto/list')->with('exito',"Producto Eliminado con exito");
+    }
+
+    public function ordenarNombre(){
+        //realizo la consulta para ordenar por nombre descendiente 
+        $productos = DB::table('producto')
+                ->orderBy('nombre', 'asc')
+                ->where('estado','<>','2')
+                ->get();
+        $tipoProductos=DB::table('tipoProducto')
+                //->where('estado','<>','2')
+                ->get();
+        $proveedores=DB::table('proveedor')
+                //->where('estado','<>','2')
+                ->get();
+        return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
+    }
+
+    public function ordenarPrecio(){
+        //realizo la consulta para ordenar por nombre descendiente 
+        $productos = DB::table('producto')
+                ->orderBy('precio', 'asc')
+                ->where('estado','<>','2')
+                ->get();
+        $tipoProductos=DB::table('tipoProducto')
+                //->where('estado','<>','2')
+                ->get();
+        $proveedores=DB::table('proveedor')
+                //->where('estado','<>','2')
+                ->get();
+        return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
+    }
+
+    public function ordenarCantidad(){
+        //realizo la consulta para ordenar por nombre descendiente 
+        $productos = DB::table('producto')
+                ->orderBy('cantidad', 'asc')
+                ->where('estado','<>','2')
+                ->get();
+        $tipoProductos=DB::table('tipoProducto')
+                //->where('estado','<>','2')
+                ->get();
+        $proveedores=DB::table('proveedor')
+                //->where('estado','<>','2')
+                ->get();
+        return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
+    }
+
+    public function search(Request $request){
+        $codigo=$request->input('codigo');
+        $productos=DB::table('producto')
+                    ->where('id','=',$codigo)
+                    ->get();
+        $tipoProductos=DB::table('tipoProducto')
+                    //->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    //->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.producto.list',array('productos'=>$productos,'tipoProductos'=>$tipoProductos,'proveedores'=>$proveedores));
+
     }
 }

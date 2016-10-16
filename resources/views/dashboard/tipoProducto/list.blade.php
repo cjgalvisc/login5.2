@@ -21,7 +21,14 @@
 	  {{Session::get('exito')}}
 	</div>
 @endif
-
+<form action="{{url('tipoProducto/search')}}" method="post" >
+    <LABEL>Codigo:</LABEL>
+    <input type="text" name="codigo" ></input>
+    <input type="submit" value="Buscar" class="btn btn-sm btn-primary"> 
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+</form>
+<br>
+<a href="{{url('tipoProducto/ordenar')}}"  ><button type="button" class="btn btn-sm btn-primary">Ordenar</button></a>
     @if(count($tipoProductos)==0)
 		<h1> No hay Tipos de Productos Registrados</h1>
 	@else
