@@ -55,7 +55,8 @@
                     </div>
                 </div>
              </div>
-             <a href="{{url('compra/list')}}" ><button type="button" class="btn btn-sm btn-primary">LISTAR COMPRAS</button></a>
-             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
+             <a href="{{url('compra/reporteProducto',array('producto'=>$producto->id))}}" ><button type="button" class="btn btn-sm btn-info">Descargar Pdf</button></a>
+             <!--<a href="{{url('compra/list')}}" ><button type="button" class="btn btn-sm btn-primary">LISTAR COMPRAS</button></a>
+             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>-->
 
 @endsection

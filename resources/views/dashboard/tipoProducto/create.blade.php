@@ -33,7 +33,7 @@
 		<input type="text" name="nombre" class="form-control">
 
 
-		<center><input type="submit" value="Guardar TipoProducto" class="btn btn-primary" ></center>
+		<center><input type="submit" value="Guardar TipoProducto" class="btn btn-success" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	</form>

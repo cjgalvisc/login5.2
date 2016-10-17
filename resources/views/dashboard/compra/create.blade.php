@@ -61,7 +61,7 @@
 			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>                      	
 			  @endforeach
 		</select>
-		<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>
+		<!--<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>-->
 
 		<!--Campo para fecha-->
         <div class="form-group">
@@ -84,6 +84,9 @@
 
       <label >Factura Compra</label>
       <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
+      
+      <br>
+      <br>
         <!--tabla-->
         <table id="tabla" class="table table-bordered table-hover">
             <thead>
@@ -114,6 +117,8 @@
         <label>Total</label>
         <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
         <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
+        <br>
+        <br>
 		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
@@ -123,7 +128,7 @@
                     </div>
                 </div>
              </div>
-             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
+             <!--<a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>-->
 
 
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->

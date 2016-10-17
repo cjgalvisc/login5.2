@@ -70,6 +70,7 @@
         </div>
         
     </form>
+
     
     <form class="form-group" action="{{url('compra/filtroProducto')}}" method="GET" >
         <label>Producto</label>
@@ -80,11 +81,25 @@
         </select>
         <input type="submit" class="btn btn-sm btn-success" align="center" value="filtrar"></input>
     </form>
+    
+<form action="{{url('compra/search')}}" method="post" >
+    <LABEL>Codigo:</LABEL>
+    <input type="text" name="codigo" ></input>
+    <input type="submit" value="Buscar" class="btn btn-sm btn-primary"> 
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+</form>
+
+<LABEL>Ordenar por:</LABEL>
+<br>
+<a href="{{url('compra/ordenarFecha')}}"  ><button type="button" class="btn btn-sm btn-primary">Fecha</button></a>
+<a href="{{url('compra/ordenarTotal')}}"  ><button type="button" class="btn btn-sm btn-primary">Total</button></a>
+<br>
+<br>
 
     @if(count($facturas)==0)
 		<h1> No hay Facturas Registradas</h1>
 	@else
-		<table class="table table-striped ">
+		<table class="table table-striped " >
             <thead>
               <tr>
                 <th>Codigo</th>
@@ -121,9 +136,9 @@
         </div>
      </div>
 
-    <a href="{{url('compra/reporte')}}" ><button type="button" class="btn btn-sm btn-primary">Descargar Pdf</button></a>
-    
-             <a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>
+   <a href="{{url('compra/reporte')}}" ><button type="button" class="btn btn-sm btn-info" >Descargar Pdf</button></a>
+             <!--<a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>-->
+             <!--<a href="{{url('compra/reporte')}}" ><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> <span class="glyphicon-class">Descargar Pdf</span> <a>-->
     
 <script>
    $('.datepicker').datepicker({

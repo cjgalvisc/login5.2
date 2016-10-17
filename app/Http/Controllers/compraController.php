@@ -315,27 +315,112 @@ class compraController extends Controller
         }
     }
 
-
-
     public function reporte()
-    {
-        $vistaurl="dashboard.pdf.reporte";
+        {
+            $vistaurl="dashboard.pdf.reporte";
 
+            $facturas=DB::table('facturaCompra')
+                        ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
+                        ->where('facturaCompra.estado','<>','2')
+                        ->orderBy('facturaCompra.fecha','asc')
+                        ->select('facturaCompra.id', 'facturaCompra.fecha', 'proveedor.empresa','facturaCompra.total')
+                        ->get();
+
+            $date = date('Y-m-d');
+            $view =  \View::make($vistaurl, compact('facturas', 'date'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view);
+     
+            return $pdf->download('reporte.pdf');
+
+            /*if($tipo==1){return $pdf->stream('reporte');}*/
+        }  
+
+    public function reporteProveedor($proveedor)
+    {
+        $vistaurl="dashboard.pdf.reporteProveedor";
+
+        $empresa=Proveedor::find($proveedor);
         $facturas=DB::table('facturaCompra')
-                    ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
-                    ->where('facturaCompra.estado','<>','2')
-                    ->select('facturaCompra.id', 'facturaCompra.fecha', 'proveedor.empresa','facturaCompra.total')
+                    ->where('id_proveedor', '=',$proveedor)
+                    ->where('estado','<>','2')
                     ->get();
 
         $date = date('Y-m-d');
-        $view =  \View::make($vistaurl, compact('facturas', 'date'))->render();
+        $view =  \View::make($vistaurl, compact('facturas', 'date','empresa'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
-        
+ 
         return $pdf->download('reporte.pdf');
 
         /*if($tipo==1){return $pdf->stream('reporte');}*/
     }  
+
+    public function reporteProducto($producto)
+    {
+        $vistaurl="dashboard.pdf.reporteProducto";
+
+        $nombre=Producto::find($producto);
+        $facturas = DB::table('compra')
+            ->join('facturaCompra','compra.id_facturaCompra', '=', 'facturaCompra.id')
+            ->where('compra.id_producto','=',$producto)
+            ->where('compra.estado','<>','2')
+            ->get();
+
+        $date = date('Y-m-d');
+        $view =  \View::make($vistaurl, compact('facturas', 'date','nombre'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+ 
+        return $pdf->download('reporte.pdf');
+
+        /*if($tipo==1){return $pdf->stream('reporte');}*/
+    }
+    
+
+     public function search(Request $request){
+        $codigo=$request->input('codigo');
+        $facturas=DB::table('facturaCompra')
+                    ->where('id','=',$codigo)
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    //->where('estado','<>','2')
+                    ->get();
+        $productos=DB::table('producto')
+                    //->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos)); 
+
+    }
+
+    public function ordenarFecha(){
+        $facturas=DB::table('facturaCompra')
+                    ->orderBy('fecha','asc')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    //->where('estado','<>','2')
+                    ->get();
+        $productos=DB::table('producto')
+                    //->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos)); 
+    }
+
+    public function ordenarTotal(){
+        $facturas=DB::table('facturaCompra')
+                    ->orderBy('total','asc')
+                    ->where('estado','<>','2')
+                    ->get();
+        $proveedores=DB::table('proveedor')
+                    //->where('estado','<>','2')
+                    ->get();
+        $productos=DB::table('producto')
+                    //->where('estado','<>','2')
+                    ->get();
+        return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos)); 
+    }
 /*
     public function ajaxProducto()
     {

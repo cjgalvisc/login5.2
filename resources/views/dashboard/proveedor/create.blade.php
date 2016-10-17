@@ -46,7 +46,7 @@
 		<label for="Nit">Nit</label>
 		<input type="text" name="nit" class="form-control">
 	
-		<center><input type="submit" value="Guardar Proveedor" class="btn btn-primary" ></center>
+		<center><input type="submit" value="Guardar Proveedor" class="btn btn-success" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	</form>

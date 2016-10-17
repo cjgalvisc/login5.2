@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Registrar <small>Compra</small>
+                            Actualizar <small>Compra</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
@@ -118,7 +118,7 @@
         <label>Total</label>
         <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
         <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
-        <center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
+        <center><input type="submit" value="Actualizar compra" class="btn btn-success" id="guardar_compra" ></center>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
     </form>

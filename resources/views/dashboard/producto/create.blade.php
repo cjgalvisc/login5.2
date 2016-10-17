@@ -58,7 +58,7 @@
 			  @endforeach
 		</select>
 	
-		<center><input type="submit" value="Guardar Producto" class="btn btn-primary" ></center>
+		<center><input type="submit" value="Guardar Producto" class="btn btn-success" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	</form>
