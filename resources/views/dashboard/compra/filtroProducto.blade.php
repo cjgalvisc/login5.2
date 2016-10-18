@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Listar <small>Facturas por Proveedor</small>
+                            Listar <small>Facturas por Producto</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">

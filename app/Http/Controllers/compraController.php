@@ -16,8 +16,12 @@ use App\FacturaCompra;
 
 use DB;
 
+
+
 class compraController extends Controller
 {
+    
+
     public function index(){
         $facturas=DB::table('facturaCompra')
                     ->where('estado','<>','2')
@@ -285,7 +289,28 @@ class compraController extends Controller
         return view('dashboard.compra.filtroProducto',array('resultados'=>$resultados,'producto'=>$producto));   
     }
 
-    public function filtroFecha(Request $request){
+    public function filtroFecha(Request $request)
+    {
+        $fechaMenor=$request->input('fechaMenor');
+        $fechaMayor=$request->input('fechaMayor');
+        
+        if($fechaMenor > $fechaMayor || $fechaMenor=='' || $fechaMayor==''){
+            return redirect()->back()->with("error","la fechaMenor no puede ser Mayor a la fechaMayor");
+        }else{
+
+            $texto='Facturas entre '.$fechaMenor.' y '.$fechaMayor;
+            $resultados=DB::table('facturaCompra')
+                    ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
+                    ->whereBetween('fecha',[$fechaMenor,$fechaMayor])
+                    ->where('facturaCompra.estado','<>','2')
+                    ->get();
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto,'fechaMenor'=>$fechaMenor));
+        }
+
+    }
+
+
+    /*public function filtroFecha(Request $request){
         $opcion=$request->input('gender');
         if($opcion=='MayorIgual'){
             $pivote=$request->input('fecha');
@@ -313,7 +338,7 @@ class compraController extends Controller
                     ->get();
            return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto));
         }
-    }
+    }*/
 
     public function reporte()
         {
@@ -377,6 +402,27 @@ class compraController extends Controller
         /*if($tipo==1){return $pdf->stream('reporte');}*/
     }
     
+    public function reporteFecha($fechaMenor)
+    {
+        echo $fechaMenor;
+
+        /*
+        $vistaurl="dashboard.pdf.reporteFecha";
+        $resultados=DB::table('facturaCompra')
+                    ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
+                    ->whereBetween('fecha',[$fechaMenor,$fechaMayor])
+                    ->where('facturaCompra.estado','<>','2')
+                    ->get();
+
+        $date = date('Y-m-d');
+        $view =  \View::make($vistaurl, compact('facturas', 'date','fechaMenor','fechaMayor'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+ 
+        return $pdf->download('reporte.pdf');
+
+        /*if($tipo==1){return $pdf->stream('reporte');}*/
+    }
 
      public function search(Request $request){
         $codigo=$request->input('codigo');

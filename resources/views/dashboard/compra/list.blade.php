@@ -48,6 +48,33 @@
         <input type="submit" class="btn btn-sm btn-success"  value="Filtrar"></input>
     </form>
 
+<!--Mensaje de error de fechas-->
+@if(Session::has('error'))
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{Session::get('error')}}
+    </div>
+@endif
+
+    <label>Fechas</label>
+    <form class="form-group" action="{{url('compra/filtroFecha')}}" method="GET" >
+        <label for="date">Desde</label>
+        <div class="input-group">
+            <input type="text" class="form-control datepicker" name="fechaMenor">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
+        <label for="date">Hasta</label>
+        <div class="input-group">
+            <input type="text" class="form-control datepicker" name="fechaMayor">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>
+    </form>
+<!--
     <form class="form-group" action="{{url('compra/filtroFecha')}}" method="GET" >
         <label for="date">Fecha</label>
         <div class="input-group">
@@ -57,19 +84,19 @@
             </div>
         </div>
         <label class="radio-inline">
-        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="MenorIgual") echo "checked";?> value="MenorIgual">MenorIgual
+        <input type="radio" name="gender" <?php /*if (isset($gender) && $gender=="MenorIgual") echo "checked"*/;?> value="MenorIgual">MenorIgual
         </label>
         <label class="radio-inline">
-        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="MayorIgual") echo "checked";?> value="MayorIgual">MayorIgual
+        <input type="radio" name="gender" <?php /*if (isset($gender) && $gender=="MayorIgual") echo "checked"*/;?> value="MayorIgual">MayorIgual
         </label>
         <label class="radio-inline">
-        <input type="radio" name="gender" <?php if (isset($gender) && $gender=="Igual") echo "checked";?> value="Igual">Igual
+        <input type="radio" name="gender" <?php /*if (isset($gender) && $gender=="Igual") echo "checked"*/;?> value="Igual">Igual
         </label>
         <div>
             <input type="submit" class="btn btn-sm btn-success" align="center" value="Filtrar"></input>       
         </div>
         
-    </form>
+    </form>-->
 
     
     <form class="form-group" action="{{url('compra/filtroProducto')}}" method="GET" >
