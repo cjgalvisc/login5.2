@@ -126,6 +126,7 @@ footer {
                 <div class="box-header with-border">
                   <div align="center"><img src="reporte/REPORTEa.jpg" style="width: 700px;" >
                     <img src="reporte/INFORME.png" style="float:left; margin:10px;" width=80 height=55 ><BR><BR>
+                    <label><h1 class="box-title">REPORTE DE TODAS LAS  COMPRAS</h1></label>
                   </div>
                   <center><h3 class="box-title">Reporte de Facturas {{$date}}</h3></center>
                 </div><!-- /.box-header -->
