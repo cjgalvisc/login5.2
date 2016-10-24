@@ -80,7 +80,7 @@ class empleadoController extends Controller
             'fechaNacimiento'=>"required|before:1996",
             'email'=>"required",
             'password'=>"required",
-            'direccion'=>"required|alpha_dash",
+            'direccion'=>"required|string",
             'telefono'=>"required|alpha_num|min:6|max:10",
             'fechaIngreso'=>"required",
         ]);

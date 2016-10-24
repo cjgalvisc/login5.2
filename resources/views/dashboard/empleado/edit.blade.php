@@ -24,13 +24,22 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Editar <small>Empleado</small>
+                            Datos <small>usuario</small>
                         </h1>
-                        <ol class="breadcrumb">
+                        <?php if($empleado->rol==1){?>
+	                        <ol class="breadcrumb">
+	                            <li class="active">
+	                                <i class="fa fa-dashboard"></i> Empleado Administrador
+	                            </li>
+	                        </ol>
+                        <?php }else{?>
+							<ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i> Empleado
-                            </li>
-                        </ol>
+                                <i class="fa fa-dashboard"></i> Empleado Bodeguero
+	                            </li>
+	                        </ol>
+	                    <?php }?>
+
 <!--mensaje de error-->
 @if(Session::has('errors'))
 	<div class="alert alert-warning alert-dismissible" role="alert">
@@ -129,10 +138,11 @@
              </div>
 
 
+
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->
 <script>
    $('.datepicker').datepicker({
-        format: "dd/mm/yyyy",
+        format: "yyyy/mm/dd",
         language: "es",
         autoclose: true
     });

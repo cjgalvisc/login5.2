@@ -46,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('/menu') }}">SystemContab</a>
+                <a class="navbar-brand" href="{{ url('compra/create') }}">SystemContab</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -55,8 +55,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{Auth::user()->name}}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                    <?php $estatus=1; ?>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                            <a href="{{ url('empleado/edit',array('id'=>Auth::user()->id,'estatus'=>$estatus)) }}"><i class="fa fa-fw fa-user"></i> Perfil</a>
                         </li>
 
                         <li>

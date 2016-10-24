@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/menu';
+    protected $redirectTo = 'compra/create';
 
     /**
      * Create a new authentication controller instance.

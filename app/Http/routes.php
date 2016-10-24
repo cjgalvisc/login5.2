@@ -11,17 +11,20 @@ Route::auth();
 //ruta para proteger las rutas del menu(solo usuarios autentificacdos pueden verlas)
 Route::group(['middleware'=>'auth'],function(){
 
+/*
 //ruta para el menu principal de la aplicaion
 Route::get('/menu', function () {
     return view('dashboard.index');
 });
+*/
 
 //rutas para empleado
 Route::group(['prefix'=>'empleado'],function(){
 	Route::get("list","empleadoController@index");
 	Route::get("create","empleadoController@create");
 	Route::post("store","empleadoController@store");
-	Route::get("edit/{id}","empleadoController@edit");
+	//el estatus es opcional lo denoto con el ?
+	Route::get("edit/{id}/{estatus?}","empleadoController@edit");
 	Route::post("update/{id}","empleadoController@update");
 	Route::get("delete/{id}","empleadoController@delete");
 	Route::get("search/{id}","empleadoController@search");
@@ -63,6 +66,7 @@ Route::group(['prefix'=>'producto'],function(){
 	Route::post("search","productoController@search");
 
 });
+
 
 
 //rutas para compra
