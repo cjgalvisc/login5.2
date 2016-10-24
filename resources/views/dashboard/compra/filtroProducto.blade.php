@@ -38,20 +38,22 @@
               </tr>
             </thead>
             <tbody>
+            <?php $total=0; ?>
             @foreach ($resultados as $resultado) 
-                @if($resultado->estado!= 2)
                     <tr>
-                        <td>{{$resultado->id_facturaCompra}}</td>
+                        <td>{{$resultado->id}}</td>
                         <td>{{$resultado->fecha}}</td>
                         <td>{{$resultado->cantidad}}</td>
                         <td>$ {{$resultado->costoUnitario}}</td>
                         <td>$ {{$resultado->subtotal}}</td>
                     </tr>
-                @endif
+             <?php $total=$total+$resultado->subtotal; ?>   
             @endforeach
             </tbody>
          </table>
+     <label><h1>Total: $<?php echo number_format($total); ?> </h1></label>
 	@endif
+    
                     </div>
                 </div>
              </div>

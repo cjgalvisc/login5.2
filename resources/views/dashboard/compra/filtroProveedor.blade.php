@@ -37,19 +37,21 @@
               </tr>
             </thead>
             <tbody>
+            <?php $total=0; ?>
             @foreach($resultados as $resultado)
-                @if($resultado->estado!=2)
 	              <tr>
 	                <td>{{$resultado->id}}</td>
 	                <td>{{$resultado->fecha}}</td>
 	                <td>$ {{$resultado->total}}</td>
 	                <td><a class="btn btn-sm btn-success" href="/facturas/<?php echo $resultado->foto; ?>" target="blank" >VER</a> </td>
 	              </tr>
-                @endif
+                <?php $total=$total+$resultado->total; ?>   
             @endforeach
             </tbody>
          </table>
+ <label><h1>Total: $<?php echo number_format($total); ?> </h1></label>
 	@endif
+  
                     </div>
                 </div>
              </div>

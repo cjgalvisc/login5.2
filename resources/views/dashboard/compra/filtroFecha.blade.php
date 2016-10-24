@@ -38,8 +38,8 @@
               </tr>
             </thead>
             <tbody>
+            <?php $total=0; ?>
             @foreach($resultados as $resultado)
-                @if($resultado->estado!=2)
 	              <tr>
 	                <td>{{$resultado->id}}</td>
 	                <td>{{$resultado->fecha}}</td>
@@ -47,16 +47,19 @@
 	                <td>{{$resultado->total}}</td>
 	                <td><a class="btn btn-sm btn-success" href="/facturas/<?php echo $resultado->foto; ?>" target="blank" >VER</a> </td>
 	              </tr>
-                @endif
+            <?php $total=$total+$resultado->total; ?>   
             @endforeach
             </tbody>
          </table>
+ <label><h1>Total: $<?php echo number_format($total); ?> </h1></label>
 	@endif
+  
                     </div>
                 </div>
              </div>
-             <a  href="{{url('compra/reporteFecha',array('fechaMenor'=>$fechaMenor))}}" ><button type="button" class="btn btn-sm btn-info" >Descargar Pdf</button></a>
-             <!--<a href="{{url('compra/list')}}" ><button type="button" class="btn btn-sm btn-primary">LISTAR COMPRAS</button></a>-->
-             <!--<a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>-->
+
+             <a href="{{url('compra/reporteFecha',array('fechaMenor'=>$fechaMenor,'fechaMayor'=>$fechaMayor))}}" >
+             <button type="button" class="btn btn-sm btn-info" >Descargar Pdf</button></a>
+             
 
 @endsection

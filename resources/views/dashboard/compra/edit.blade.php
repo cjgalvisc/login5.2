@@ -106,9 +106,9 @@
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
                     <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" id="id_codigo" value="{{$detalle->id_producto}}"></td>
-                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
-                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal " ></td>
-                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
+                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="{{$detalle->cantidad}}" pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
+                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="{{$detalle->costoUnitario}}" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal " ></td>
+                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="{{$detalle->subtotal}}"  readonly></td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
             @endforeach

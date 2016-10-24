@@ -79,7 +79,7 @@ Route::group(['prefix'=>'compra'],function(){
 	Route::get("reporte","compraController@reporte");
 	Route::get("reporteProveedor/{id}","compraController@reporteProveedor");
 	Route::get("reporteProducto/{id}","compraController@reporteProducto");
-	Route::get("reporteFecha/{id}","compraController@reporteFecha");
+	Route::get("reporteFecha/{fa}/{fb}","compraController@reporteFecha");
 	Route::post("search","compraController@search");
 	Route::get("ordenarFecha","compraController@ordenarFecha");
 	Route::get("ordenarTotal","compraController@ordenarTotal");

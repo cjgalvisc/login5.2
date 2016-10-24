@@ -146,7 +146,7 @@ footer {
                     <?php $total=0; ?>
                  @foreach($facturas as $factura)
                     <tr>
-                      <td align="center" style="width: 40px">{{$factura->id_facturaCompra}}</td>
+                      <td align="center" style="width: 40px">{{$factura->id}}</td>
                       <td align="center" style="width: 40px">{{$factura->fecha}}</td>
                       <td align="center" style="width: 40px">{{$factura->cantidad}}</td>
                       <td align="center" style="width: 40px">$ <?php echo number_format($factura->costoUnitario,0); ?></td>

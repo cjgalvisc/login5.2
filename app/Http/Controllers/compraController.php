@@ -27,10 +27,10 @@ class compraController extends Controller
                     ->where('estado','<>','2')
                     ->get();
         $proveedores=DB::table('proveedor')
-                    ->where('estado','<>','2')
+                    //->where('estado','<>','2')
                     ->get();
         $productos=DB::table('producto')
-                    ->where('estado','<>','2')
+                    //->where('estado','<>','2')
                     ->get();
         return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos));    
     }
@@ -47,29 +47,42 @@ class compraController extends Controller
 
     public function store(Request $request){
         //captruo las filas de la tabla
-        $codigos=$_POST['codigos'];
+
+        //columna con todos los codigos de producto
+        //compruebo que exista almenos una fila en la tabla
+        if(isset($_POST['codigos'])){
+            $codigos=$_POST['codigos'];
+        }else{
+            return redirect()->back()->with("error","Debe ingresar al menos un producto");
+        }
+        //columna con todas las cantidades
         $cantidades=$_POST['cantidades'];
+        //columna con todos los subtotales
         $costos=$_POST['costos'];
+        //para verificar que todos los campo de numero sean positvos
         $bandera1=false;
+        //para verficiar que todos los codigos ingresados existan 
         $bandera2=false;
+        //para validar que los campos "fecha","imagen" y "total" no esten vacios
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
-            'total'=>"required|integer|between:0,100000000"
+            'total'=>"required|numeric|between:0,100000000"
         ]);
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
+        //si existe algun campo que no cumpla la bandera se pone en true
            if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
             $bandera1=true;
             break;
            }
        }
        
-
-        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
+        //traigo todos los productos  de la BD, para verifcar que los codigos ingresados conincidan con estos.
         $productos=DB::table('producto')
                     ->where('estado','<>','2')
                     ->get();
+        //si todos los codigos coninciden el contador debe ser igual al tamaño del vetor $codigos[]
         $contador=0;
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
            foreach ($productos as $producto) {
@@ -78,42 +91,56 @@ class compraController extends Controller
                }
            }
        }
+       //si el contador no es igual al tamaño del vector la bandera2 se pone en true
        if($contador!=sizeof($codigos)){
             $bandera2=true;
        }
 
-       
+       //si existe algun error redirecciono  de vuelta con el mensaje de error
         if($validator->fails()){
+            //si el campo fecha,imagen o total estan vacios
             return redirect()->back()->withErrors($validator->errors());
         }else if($bandera1){
-            return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
+            //si hay algun valor negativo en la tabla
+            return redirect()->back()->with("error","los campos de la tabla deben ser positivos o no ingreso ningun producto");
         }else if($bandera2){
+            //si alguno de los codigos ingresados en la columna codigos no existen en la tabla producto de la BD
             return redirect()->back()->with("error","alguno de los productos ingresados no existen");
         }else{
-        //capturo las filas de la tabla de la factura
+        //si no existe ningun error todo esta bien ingresado y procedo a guardar la informacion en la BD
+
+        //capturo el nombre del la imagen 
         $imagen=$_FILES['imagen']['name'];
         
 
-        //instanciamos una nueva factura de compra
+        //instanciamos una nueva factura de compra(usamos ELOQUENT)
         $facturaCompra=new FacturaCompra();
-        //datos para facturaCompra
+        //guardo los datos para facturaCompra
+        //la fecha
         $facturaCompra->fecha= date("Y-m-d", strtotime($request->input("fecha")));
+        //el total de la facturaCompra
         $facturaCompra->total=$request->input("total");
+        //la nombre de la imagen
         $facturaCompra->foto=$imagen;
+        //el estado
         $facturaCompra->estado="1";
+        //el id del proveedor 
         $facturaCompra->id_proveedor=$request->input("proveedor");
+        //finalmento guardo la factura en la BD
         $facturaCompra->save();
 
-        //para subir la imagen al servidor
+        //para subir la imagen al servidor(almeceno la ruta)
         if(!move_uploaded_file($_FILES['imagen']['tmp_name'],"facturas/".$imagen)){
             echo "erorr al subir documento";
         }
+
         //capturo el id con el cual fue guardado la factura
         $id_factura=$facturaCompra->id;
 
         //actualizo cada uno de los productos
         for ($j=0; $j < sizeof($codigos); $j++) 
         { 
+            //para encontrar los productos con el id correspondientes
             $producto=Producto::find($codigos[$j]);
             $producto->costo=(float)$costos[$j];
             $producto->precio=(float)$costos[$j]+(float)$costos[$j]*(0.25);
@@ -121,7 +148,7 @@ class compraController extends Controller
             $producto->save();
         }
         
-        //creo cada una de las compras de la factura
+        //creo cada una de las compras relacionadas a la facturaCompra
         for ($k=0; $k<sizeof($codigos); $k++) 
         { 
             $compra=new Compra();
@@ -134,6 +161,8 @@ class compraController extends Controller
             $compra->save();         
         }
 
+        //si todo salio bien, redirecciono a la lista de facturasCompra con el mensaje
+        //de exito
         return redirect('compra/list')->with('exito',"compra registrada con exito");
         } 	
         
@@ -141,20 +170,31 @@ class compraController extends Controller
 
 
     public function edit(Request $request,$id){
+        //Traigo la facturaCompra con el ID
         $compra=FacturaCompra::find($id);
+        //traigo las compras relacionadas a esa facturaCompra
         $detalles=DB::table('compra')
                     ->where('id_facturaCompra','=',$id)
                     ->where('estado','<>','2')
                     ->get();
+        //traigo el proveedor relacionado a esa facturaCompra
         $proveedores=DB::table('proveedor')
                     ->where('estado','<>','2')
                     ->get();
+        //envio todo a la vista editar compra
         return view('dashboard.compra.edit',array('compra'=>$compra,'proveedores'=>$proveedores,'detalles'=>$detalles)); 
     }
 
     public function update(Request $request,$id){
-        //captruo las filas de la tabla
-        $codigos=$_POST['codigos'];
+
+        //columna con todos los codigos de producto
+        //compruebo que exista almenos una fila en la tabla
+        if(isset($_POST['codigos'])){
+            $codigos=$_POST['codigos'];
+        }else{
+            return redirect()->back()->with("error","Debe ingresar al menos un producto");
+        }
+
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
         $bandera1=false;
@@ -162,8 +202,9 @@ class compraController extends Controller
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
-            'total'=>"required|integer|between:0,100000000"
+            'total'=>"required|numeric|between:0,100000000"
         ]);
+
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
            if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
@@ -249,15 +290,19 @@ class compraController extends Controller
     }
     
     public function delete($id){
+        //encuentro la facturaCompra con el ID
         $facturaCompra=FacturaCompra::find($id);
+        //actualizo su estado a 2
         $facturaCompra->estado="2";
         $facturaCompra->save();
 
+        //encuentro todas las compras con id_facturaCompra igual al ID
         $compras=Compra::all();
         foreach ($compras as $compra) 
         {
             if($compra->id_facturaCompra==$id)
             {
+                //actulizo su estado a 2   
                 $compra->estado="2";
                 $compra->save();  
             }
@@ -268,7 +313,9 @@ class compraController extends Controller
     
     public function filtroProveedor(Request $request){
         $pivote=$request->input('proveedor');
+        //encuentro el proveedor de la facutare
         $proveedor=Proveedor::find($pivote);
+        //busco las facturas con ese proveedor
         $resultados=DB::table('facturaCompra')
                     ->where('id_proveedor', '=',$pivote)
                     ->where('estado','<>','2')
@@ -284,6 +331,7 @@ class compraController extends Controller
             ->join('facturaCompra','compra.id_facturaCompra', '=', 'facturaCompra.id')
             ->where('compra.id_producto','=',$pivote)
             ->where('compra.estado','<>','2')
+            ->select('facturaCompra.id','facturaCompra.fecha','compra.cantidad','compra.costoUnitario','compra.subtotal')
             ->get();
 
         return view('dashboard.compra.filtroProducto',array('resultados'=>$resultados,'producto'=>$producto));   
@@ -291,20 +339,23 @@ class compraController extends Controller
 
     public function filtroFecha(Request $request)
     {
+        //guardo las dos fechas
         $fechaMenor=$request->input('fechaMenor');
         $fechaMayor=$request->input('fechaMayor');
-        
+        //compruebo que no sean inconsistentes y que no esten vacias
         if($fechaMenor > $fechaMayor || $fechaMenor=='' || $fechaMayor==''){
             return redirect()->back()->with("error","la fechaMenor no puede ser Mayor a la fechaMayor");
         }else{
 
             $texto='Facturas entre '.$fechaMenor.' y '.$fechaMayor;
+            //Query usando ELOQUENT
             $resultados=DB::table('facturaCompra')
                     ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
                     ->whereBetween('fecha',[$fechaMenor,$fechaMayor])
                     ->where('facturaCompra.estado','<>','2')
+                    ->select('facturaCompra.id','facturaCompra.fecha','proveedor.empresa','facturaCompra.total','facturaCompra.foto')
                     ->get();
-           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto,'fechaMenor'=>$fechaMenor));
+           return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto,'fechaMenor'=>$fechaMenor,'fechaMayor'=>$fechaMayor));
         }
 
     }
@@ -390,6 +441,7 @@ class compraController extends Controller
             ->join('facturaCompra','compra.id_facturaCompra', '=', 'facturaCompra.id')
             ->where('compra.id_producto','=',$producto)
             ->where('compra.estado','<>','2')
+            ->select('facturaCompra.id','facturaCompra.fecha','compra.cantidad','compra.costoUnitario','compra.subtotal')
             ->get();
 
         $date = date('Y-m-d');
@@ -402,9 +454,9 @@ class compraController extends Controller
         /*if($tipo==1){return $pdf->stream('reporte');}*/
     }
     
-    public function reporteFecha($fechaMenor)
+    public function reporteFecha($fa,$fb)
     {
-        echo $fechaMenor;
+        echo $fa;
 
         /*
         $vistaurl="dashboard.pdf.reporteFecha";
