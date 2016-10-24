@@ -8,6 +8,8 @@ use App\Http\Requests;
 use Validator;
 use App\Proveedor;
 
+use Carbon\Carbon;
+
 use App\Producto;
 
 use App\Compra;
@@ -355,6 +357,10 @@ class compraController extends Controller
                     ->where('facturaCompra.estado','<>','2')
                     ->select('facturaCompra.id','facturaCompra.fecha','proveedor.empresa','facturaCompra.total','facturaCompra.foto')
                     ->get();
+            //convierto las fechas a String para poder enviarlas por el Urrel
+            $fechaMenor=date("Y-m-d", strtotime($fechaMenor));
+            $fechaMayor=date("Y-m-d", strtotime($fechaMayor));
+
            return view('dashboard.compra.filtroFecha',array('resultados'=>$resultados,'texto'=>$texto,'fechaMenor'=>$fechaMenor,'fechaMayor'=>$fechaMayor));
         }
 
@@ -456,7 +462,7 @@ class compraController extends Controller
     
     public function reporteFecha($fa,$fb)
     {
-        echo $fa;
+        echo $fa." ".$fb;
 
         /*
         $vistaurl="dashboard.pdf.reporteFecha";

@@ -58,8 +58,9 @@
                 </div>
              </div>
 
-             <a href="{{url('compra/reporteFecha',array('fechaMenor'=>$fechaMenor,'fechaMayor'=>$fechaMayor))}}" >
-             <button type="button" class="btn btn-sm btn-info" >Descargar Pdf</button></a>
+<a href="{{url('compra/reporteFecha',array('fechaMenor'=>$fechaMenor,'fechaMayor'=>$fechaMayor))}}">
+    <button type="button" class="btn btn-sm btn-info" >Descargar Pdf</button>
+</a>
              
 
 @endsection
