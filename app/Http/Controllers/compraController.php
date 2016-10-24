@@ -462,18 +462,16 @@ class compraController extends Controller
     
     public function reporteFecha($fa,$fb)
     {
-        echo $fa." ".$fb;
-
-        /*
         $vistaurl="dashboard.pdf.reporteFecha";
-        $resultados=DB::table('facturaCompra')
+        $facturas=DB::table('facturaCompra')
                     ->join('proveedor','facturaCompra.id_proveedor', '=', 'proveedor.id')
-                    ->whereBetween('fecha',[$fechaMenor,$fechaMayor])
+                    ->whereBetween('fecha',[$fa,$fb])
                     ->where('facturaCompra.estado','<>','2')
+                    ->select('facturaCompra.id','facturaCompra.fecha','proveedor.empresa','facturaCompra.total')
                     ->get();
 
         $date = date('Y-m-d');
-        $view =  \View::make($vistaurl, compact('facturas', 'date','fechaMenor','fechaMayor'))->render();
+        $view =  \View::make($vistaurl, compact('facturas', 'date','fa','fb'))->render();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($view);
  
@@ -525,19 +523,5 @@ class compraController extends Controller
                     ->get();
         return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos)); 
     }
-/*
-    public function ajaxProducto()
-    {
-        $id_proveedor=$_GET['id_proveedor'];
-        $id_codigo=$_GET['id_codigo'];
-        $consulta=DB::table('producto')
-            ->where('id','=',$id_codigo)
-            ->where('id_proveedor','=',$id_proveedor)
-            ->get();
 
-        if(!$consulta){
-            echo "falso";
-        }
-    }
-    */
 }

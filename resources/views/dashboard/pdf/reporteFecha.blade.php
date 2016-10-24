@@ -129,7 +129,7 @@ footer {
                     <label><h1 class="box-title">REPORTE DE TODAS LAS  COMPRAS POR FECHA</h1></label>
                   </div>
                   <center><h3 class="box-title">Reporte de Facturas {{$date}}</h3></center>
-                  <center><h3 class="box-title">Desde: {{$fechaMenor}} hasta: {{$fechaMayor}}</h3></center>
+                  <center><h3 class="box-title">Desde: {{$fa}} hasta: {{$fb}}</h3></center>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table class="table table-bordered" border="1" width="90%">
