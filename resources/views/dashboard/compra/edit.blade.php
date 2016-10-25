@@ -210,6 +210,7 @@ $(function(){
     $(document).on("click",".eliminar",function(){
         var parent = $(this).parents().get(0);
         $(parent).remove();
+        alerta();
     });
 
 });
