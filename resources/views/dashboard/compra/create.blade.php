@@ -77,12 +77,12 @@
 
 	    <!--Campo para guardar documento-->      
 		<div class="form-group">
-             	<label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
+             	<label>Factura de Compra (jpg,jpge,gif)<span class="required">*</span></label>
 				<input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
 
-      <label >Factura Compra</label>
+      <label >Nuevo Procuto en ompra</label>
       <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
       
       <br>
