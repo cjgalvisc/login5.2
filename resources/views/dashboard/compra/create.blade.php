@@ -117,7 +117,7 @@
 
                     <td><input type="number" min="0"  class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" >
                     </td>
-                    <td><input type="text" class="form-control" id="total-0" name="subtotales[]"  value="0" readonly>
+                    <td><input type="text" class="form-control-new" id="total-0" name="subtotales[]"  value="0" readonly>
                     </td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
@@ -189,15 +189,12 @@ function calcular_total(i) {
 
 
 function alerta(){
-    importe_total=0;
-    var xx=document.getElementById("tabla").rows.length-1;
-    
-    for (var i = 0; i < xx; i++) {
-        id="total-".concat(i);
-        //alert(id);
-        valor=document.getElementById(id).value;
-        importe_total = importe_total+ parseFloat(valor);
-    }
+    importe_total = 0
+    $(".form-control-new").each(
+        function(index, value) {
+            importe_total = importe_total + eval($(this).val());
+        }
+    );
     
     
     
@@ -221,7 +218,7 @@ $(function(){
         .append("<tr><td><select name='codigos[]' class='form-control' ><?php foreach($productos as $producto){ ?> <option value='<?php echo $producto->id; ?>'><?php echo $producto->nombre; ?></option> <?php }?></select>    </td> "+
             "<td></select><input type='number' min='0' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
             " <td></select><input type='number' min='0' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
-            " <td><input type='text' class='form-control' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
+            " <td><input type='text' class='form-control-new' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
             "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
         x++;
     });
