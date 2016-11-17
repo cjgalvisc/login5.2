@@ -187,17 +187,24 @@ function calcular_total(i) {
 
 <script type="text/javascript">
 
+
 function alerta(){
+    importe_total=0;
+    var xx=document.getElementById("tabla").rows.length-1;
     
-    importe_total = 0
-    $(".form-control-static").each(
-        function(index, value) {
-            importe_total = importe_total + eval($(this).val());
-        }
-    );
+    for (var i = 0; i < xx; i++) {
+        id="total-".concat(i);
+        //alert(id);
+        valor=document.getElementById(id).value;
+        importe_total = importe_total+ parseFloat(valor);
+    }
+    
+    
+    
     $("#totales").val(importe_total);
 
 }
+
 
 
 </script>
