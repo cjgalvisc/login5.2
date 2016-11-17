@@ -86,13 +86,13 @@
         </div>
 
 
-      <label >Factura Compra</label>
-      <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
+      <center><label >FACTURA COMPRA</label></center>
+
         <!--tabla-->
         <table id="tabla" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Codigo Producto</th>
+                    <th>Nombre Producto</th>
                     <th>Cantidad</th>
                     <th>Precio Unitario</th>
                     <th>Subtotal</th>
@@ -103,20 +103,35 @@
             <!-- Cuerpo de la tabla con los campos -->
             <tbody>
             @foreach($detalles as $detalle)
-                <!-- fila base para clonar y agregar al final -->
+
                 <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,25}" id="id_codigo" value="{{$detalle->id_producto}}"></td>
-                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="{{$detalle->cantidad}}" pattern="[0-9]{1,25}" title="Este numero debe ser un entero"></td>
-                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="{{$detalle->costoUnitario}}" pattern="[0-9.]{1,25}" title="Este valor debe ser un numero entero o decimal " ></td>
-                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="{{$detalle->subtotal}}"  readonly></td>
+                    <td>
+                    <select name="codigos[]" class="form-control" >
+                          @foreach($productos as $producto)
+                                 @if($producto->id==$detalle->id_producto)
+                                    <option selected="" value="{{$producto->id}}">{{$producto->nombre}} </option>
+                                @else
+                                    <option value="{{$producto->id}}">{{$producto->nombre}} </option>
+                                 @endif
+                           @endforeach
+                    </select>
+                    </td>
+                    <td><input type="number" min="0" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="{{$detalle->cantidad}}" >
+                    </td>
+
+                    <td><input type="number" min="0"  class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="{{$detalle->costoUnitario}}" >
+                    </td>
+                    <td><input type="text" class="form-control" id="total-0" name="subtotales[]"  value="{{$detalle->subtotal}}" readonly>
+                    </td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        
-        <label>Total</label>
-        <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
+        <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
+        <br><br>
+        <label>TOTAL</label>
+        <input type="text" name="total" id="totales"  value="{{$compra->total}}" class="form-control" readonly />
         <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
         <center><input type="submit" value="Actualizar compra" class="btn btn-success" id="guardar_compra" ></center>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -198,10 +213,10 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,25}' id='id_codigo' /></td>"+
-            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,25}'' title='Este numero debe ser un entero'/></td>"+
-            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,25}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
-            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
+        .append("<tr><td><select name='codigos[]' class='form-control' ><?php foreach($productos as $producto){ ?> <option value='<?php echo $producto->id; ?>'><?php echo $producto->nombre; ?></option> <?php }?></select>    </td> "+
+            "<td></select><input type='number' min='0' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
+            " <td></select><input type='number' min='0' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
+            " <td><input type='text' class='form-control' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
             "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
         x++;
     });

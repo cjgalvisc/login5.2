@@ -79,12 +79,14 @@
 
 	    <!--Campo para guardar documento-->      
 		<div class="form-group">
-             	<label>Foto(jpg,jpge,gif)<span class="required">*</span></label>
+             	<label>Factura de Compra (jpg,jpge,gif)<span class="required">*</span></label>
 				<input type="file" name="imagen" class="form-control" accept="image/*">
         </div>
 
 
+
       <center><label >FACTURA COMPRA</label></center>
+
         <!--tabla-->
         <table id="tabla" class="table table-bordered table-hover">
             <thead>
@@ -209,7 +211,7 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
-        .append("<tr><td><select name='codigos[]' class='form-control' ><?php foreach($productos as $producto){ ?> <option value='<?php echo $producto->nombre; ?>'><?php echo $producto->nombre; ?></option> <?php }?></select>    </td> "+
+        .append("<tr><td><select name='codigos[]' class='form-control' ><?php foreach($productos as $producto){ ?> <option value='<?php echo $producto->id; ?>'><?php echo $producto->nombre; ?></option> <?php }?></select>    </td> "+
             "<td></select><input type='number' min='0' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
             " <td></select><input type='number' min='0' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
             " <td><input type='text' class='form-control' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+

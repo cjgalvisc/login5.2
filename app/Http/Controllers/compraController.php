@@ -61,53 +61,17 @@ class compraController extends Controller
         $cantidades=$_POST['cantidades'];
         //columna con todos los subtotales
         $costos=$_POST['costos'];
-        //para verificar que todos los campo de numero sean positvos
-        $bandera1=false;
-        //para verficiar que todos los codigos ingresados existan 
-        $bandera2=false;
+
         //para validar que los campos "fecha","imagen" y "total" no esten vacios
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
-            'total'=>"required|numeric"
         ]);
-        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
-       for ($i=0; $i <sizeof($codigos) ; $i++) { 
-        //si existe algun campo que no cumpla la bandera se pone en true
-           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
-            $bandera1=true;
-            break;
-           }
-       }
-       
-        //traigo todos los productos  de la BD, para verifcar que los codigos ingresados conincidan con estos.
-        $productos=DB::table('producto')
-                    ->where('estado','<>','2')
-                    ->get();
-        //si todos los codigos coninciden el contador debe ser igual al tamaño del vetor $codigos[]
-        $contador=0;
-       for ($i=0; $i <sizeof($codigos) ; $i++) { 
-           foreach ($productos as $producto) {
-               if($producto->id==$codigos[$i]){
-                    $contador++;
-               }
-           }
-       }
-       //si el contador no es igual al tamaño del vector la bandera2 se pone en true
-       if($contador!=sizeof($codigos)){
-            $bandera2=true;
-       }
 
        //si existe algun error redirecciono  de vuelta con el mensaje de error
         if($validator->fails()){
             //si el campo fecha,imagen o total estan vacios
             return redirect()->back()->withErrors($validator->errors());
-        }else if($bandera1){
-            //si hay algun valor negativo en la tabla
-            return redirect()->back()->with("error","los campos de la tabla deben ser positivos o no ingreso ningun producto");
-        }else if($bandera2){
-            //si alguno de los codigos ingresados en la columna codigos no existen en la tabla producto de la BD
-            return redirect()->back()->with("error","alguno de los productos ingresados no existen");
         }else{
         //si no existe ningun error todo esta bien ingresado y procedo a guardar la informacion en la BD
 
@@ -183,8 +147,11 @@ class compraController extends Controller
         $proveedores=DB::table('proveedor')
                     ->where('estado','<>','2')
                     ->get();
+        $productos=DB::table('producto')
+                    ->where('estado','<>','2')
+                    ->get();
         //envio todo a la vista editar compra
-        return view('dashboard.compra.edit',array('compra'=>$compra,'proveedores'=>$proveedores,'detalles'=>$detalles)); 
+        return view('dashboard.compra.edit',array('compra'=>$compra,'proveedores'=>$proveedores,'detalles'=>$detalles,'productos'=>$productos)); 
     }
 
     public function update(Request $request,$id){
@@ -199,46 +166,15 @@ class compraController extends Controller
 
         $cantidades=$_POST['cantidades'];
         $costos=$_POST['costos'];
-        $bandera1=false;
-        $bandera2=false;
+
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
-            'total'=>"required|numeric|between:0,100000000"
+            'total'=>"required|numeric"
         ]);
 
-        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
-       for ($i=0; $i <sizeof($codigos) ; $i++) { 
-           if(!ctype_digit($codigos[$i]) || !ctype_digit($cantidades[$i]) || !ctype_digit($costos[$i])){
-            $bandera1=true;
-            break;
-           }
-       }
-       
-
-        //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
-        $productos=DB::table('producto')
-                    ->where('estado','<>','2')
-                    ->get();
-        $contador=0;
-       for ($i=0; $i <sizeof($codigos) ; $i++) { 
-           foreach ($productos as $producto) {
-               if($producto->id==$codigos[$i]){
-                    $contador++;
-               }
-           }
-       }
-       if($contador!=sizeof($codigos)){
-            $bandera2=true;
-       }
-
-       
         if($validator->fails()){
             return redirect()->back()->withErrors($validator->errors());
-        }else if($bandera1){
-            return redirect()->back()->with("error","los campos de la tabla deben ser positivos");
-        }else if($bandera2){
-            return redirect()->back()->with("error","alguno de los productos ingresados no existen");
         }else{
 
         //capturo las filas de la tabla de la factura
