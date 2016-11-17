@@ -42,7 +42,7 @@
         <label>Proveedor</label>
         <select class="form-control" name="proveedor">
             @foreach($proveedores as $proveedor)
-                <option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>
+                <option value="{{$proveedor->id}}"><?php echo strtolower($proveedor->empresa); ?></option>
             @endforeach
         </select>
         <input type="submit" class="btn btn-sm btn-success"  value="Filtrar"></input>
@@ -103,7 +103,7 @@
         <label>Producto</label>
         <select class="form-control" name="producto">
             @foreach($productos as $producto)
-                <option value="{{$producto->id}}">{{$producto->nombre}}</option>
+                <option value="{{$producto->id}}"><?php echo strtolower($producto->nombre); ?></option>
             @endforeach
         </select>
         <input type="submit" class="btn btn-sm btn-success" align="center" value="filtrar"></input>
@@ -147,7 +147,7 @@
 
                     @foreach($proveedores as $proveedor)
                         @if($proveedor->id==$factura->id_proveedor)
-                            <td>{{$proveedor->empresa}}</td>
+                            <td><?php echo strtolower($proveedor->empresa); ?></td>
                         @endif
                     @endforeach
 	                <td>

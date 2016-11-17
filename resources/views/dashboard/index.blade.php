@@ -80,7 +80,7 @@
                             </li>
 
                         </ul>
-<!--
+
                         <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Proveedor<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -112,9 +112,8 @@
                                 <a href="{{url('producto/list')}}">Listar</a>
                             </li>
                         </ul>
-                        
-                        -->
-                        <!--
+     
+ 
                         <a href="#" class="active"><i class="fa fa-fw fa-dashboard"></i> Empleado<span class="fa arrow"> </a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -125,7 +124,7 @@
                             </li>
 
                         </ul>
-                        -->
+   
                         
                     </li>
                  
@@ -134,7 +133,7 @@
             <!-- /.navbar-collapse -->
         </nav>
         @yield('contenido')
-        <div style="font: 140% 'News Cycle', arial, sans-serif; color: #FFF;
+       <!-- <div style="font: 140% 'News Cycle', arial, sans-serif; color: #FFF;
   text-align: center;"><BR><CENTER >SISTEMAS HECHOS A SU MEDIDAD<BR><br>
 _____$$$$$$$$$$$$$$$$$$$$$ <BR>
 _____$$$$$$$$$$$$$$$$$$$$$$$$$$$ <BR>
@@ -159,8 +158,8 @@ ____""$$$$o$o$o$o$o$o$o$o$$$$"<br><br>
 <footer >
                <!-- pie de pagina-->
                
-              <p>Copyright & copy 2016;Powered By CJG & YAO | systemContab.co</p>
-            </footer></CENTER></div>
+             <!-- <p>Copyright & copy 2016;Powered By CJG & YAO | systemContab.co</p>
+            </footer></CENTER></div>-->
         </div>
         <!-- /#page-wrapper -->
 

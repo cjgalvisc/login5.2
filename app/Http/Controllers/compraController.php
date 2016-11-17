@@ -69,7 +69,7 @@ class compraController extends Controller
         $validator= Validator::make($request->all(),[
             'fecha'=>"required",
             'imagen'=>"required",
-            'total'=>"required|numeric|between:0,100000000"
+            'total'=>"required|numeric"
         ]);
         //valido que las filas de las tablas no sean negativas y solo sean numeros enteros
        for ($i=0; $i <sizeof($codigos) ; $i++) { 
@@ -522,6 +522,20 @@ class compraController extends Controller
                     //->where('estado','<>','2')
                     ->get();
         return view('dashboard.compra.list',array('facturas'=>$facturas,'proveedores'=>$proveedores,'productos'=>$productos)); 
+    }
+    /*metodo para el autocompletado*/
+    public function autocompletar(Request $request){
+        $letra=$_GET['letra'];
+        $productos=DB::table('producto')
+                    ->where('nombre','like','$letra%')
+                    //->where('estado','<>','2')
+                    ->get();
+        $datos=array();
+        foreach ($productos as $producto) {
+            $datos[]=$producto->nombre;
+        }
+        return response()->json(['datos' => $datos]);
+
     }
 
 }

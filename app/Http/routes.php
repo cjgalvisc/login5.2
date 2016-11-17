@@ -90,6 +90,7 @@ Route::group(['prefix'=>'compra'],function(){
 	Route::post("search","compraController@search");
 	Route::get("ordenarFecha","compraController@ordenarFecha");
 	Route::get("ordenarTotal","compraController@ordenarTotal");
+	Route::get("autocompletar","compraController@autocompletar");
 });
 
 

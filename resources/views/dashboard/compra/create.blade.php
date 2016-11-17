@@ -16,7 +16,9 @@
     <!-- Languaje -->
     <script src="{{asset('datePicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
 
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 @section('contenido')
 <!-- Page Heading -->
@@ -58,7 +60,7 @@
 		<label >Proveedor</label>
 		<select name="proveedor" class="form-control" id="lista_proveedores">
 			  @foreach($proveedores as $proveedor)
-			    	<option value="{{$proveedor->id}}">{{$proveedor->empresa}}</option>                      	
+			    	<option value="{{$proveedor->id}}"><?php echo strtolower($proveedor->empresa);?></option>                      	
 			  @endforeach
 		</select>
 		<!--<a href="{{url('proveedor/create')}}" ><button type="button" class="btn btn-sm btn-primary">Nuevo</button></a>-->
@@ -82,16 +84,12 @@
         </div>
 
 
-      <label >Factura Compra</label>
-      <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
-      
-      <br>
-      <br>
+      <center><label >FACTURA COMPRA</label></center>
         <!--tabla-->
         <table id="tabla" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Codigo Producto</th>
+                    <th>Nombre Producto</th>
                     <th>Cantidad</th>
                     <th>Precio Unitario</th>
                     <th>Subtotal</th>
@@ -104,34 +102,47 @@
          
                 <!-- fila base para clonar y agregar al final -->
                 <tr class="fila-base">
-                    <td><input type="text" class="form-control" name="codigos[]" pattern="[0-9]{1,}" id="id_codigo"></td>
-                    <td><input type="text" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0"  pattern="[0-9]{1,}" title="Este numero debe ser un entero"></td>
-                    <td><input type="text" class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" pattern="[0-9.]{1,}" title="Este valor debe ser un numero entero o decimal "></td>
-                    <td><input type="text" class="form-control-static" id="total-0" name="subtotales[]"  value="0" readonly></td>
+                    <td>
+                    <select name="codigos[]" class="form-control" >
+                          @foreach($productos as $producto)
+                                <option value="{{$producto->id}}">{{$producto->nombre}} </option>             
+
+                           @endforeach
+                    </select>
+                    </td>
+                    <td><input type="number" min="0" class="form-control" id="cantidad-0" name="cantidades[]"  onchange="calcular_total('0')" value="0" >
+                    </td>
+
+                    <td><input type="number" min="0"  class="form-control" id="costo-0" name="costos[]"  onchange="calcular_total('0')" value="0" >
+                    </td>
+                    <td><input type="text" class="form-control" id="total-0" name="subtotales[]"  value="0" readonly>
+                    </td>
                     <td class="eliminar"><div class="btn  btn-danger">Eliminar</div></td>
                 </tr>
          
             </tbody>
         </table>
-        
-        <label>Total</label>
+
+         <input type="button" id="agregar" value="Agregar" class="btn btn-sm btn-success"></input>
+        <br><br>
+        <label>TOTAL</label>
         <input type="text" name="total" id="totales" value="0" class="form-control" readonly />
         <!--<input type="button" id="btotal" value="Calcular Total" class="btn btn-info" onclick="alerta()" />-->
         <br>
         <br>
 		<center><input type="submit" value="Guardar compra" class="btn btn-success" id="guardar_compra" ></center>
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
+   </form>
 
-	</form>
+
       </div>
      
                     </div>
                 </div>
              </div>
-             <!--<a href="{{url('menu')}}" ><button type="button" class="btn btn-sm btn-primary">MENU</button></a>-->
-
 
 <!--JavaScript para controlar el formato de las fechas de los datePicker-->
+
 
 <script>
    $('.datepicker').datepicker({
@@ -198,10 +209,10 @@ $(function(){
         var FieldCount = x-1; //para el seguimiento de los campos
         FieldCount++;
         $("#tabla")
-        .append("<tr><td></select><input type='text' class='form-control' name='codigos[]' pattern='[0-9]{1,}' /></td>"+
-            "<td></select><input type='text' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9]{1,}'' title='Este numero debe ser un entero'/></td>"+
-            " <td></select><input type='text' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' pattern='[0-9.]{1,}'' title='Este valor debe ser un numero entero o decimal '/></td>"+
-            " <td><input type='text' class='form-control-static' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
+        .append("<tr><td><select name='codigos[]' class='form-control' ><?php foreach($productos as $producto){ ?> <option value='<?php echo $producto->nombre; ?>'><?php echo $producto->nombre; ?></option> <?php }?></select>    </td> "+
+            "<td></select><input type='number' min='0' class='form-control' id='cantidad-"+FieldCount+"' name='cantidades[]'  onchange='calcular_total("+ FieldCount +")' value='0'/></td>"+
+            " <td></select><input type='number' min='0' class='form-control' id='costo-"+FieldCount+"' name='costos[]'  onchange='calcular_total("+ FieldCount +")' value='0' /></td>"+
+            " <td><input type='text' class='form-control' id='total-"+FieldCount+"' name='subtotales[]'  value='0' readonly/></td> "+
             "<td class='eliminar'><div class='btn  btn-danger'>Eliminar</div></td></tr>")
         x++;
     });
@@ -216,7 +227,9 @@ $(function(){
 });
 
 </script>
-<!--
+<!---AJAX-->
+
+
 <script type="text/javascript">
     $("#id_codigo").change(function(){
         var datosBD={id_proveedor:$("#lista_proveedores").val(),
@@ -231,7 +244,8 @@ $(function(){
         }
     }
 </script>
--->
+
+
 @endsection
 
 
